@@ -1,0 +1,13 @@
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<DinnerParty.Models.Home>
+
+@{
+  Layout = "_Layout.cshtml";
+}              
+
+@section Title{
+    Home Page Title
+}
+
+<h1>@Model.Header</h1>
+<p>@Model.Body</p>
+
