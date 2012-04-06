@@ -4,19 +4,29 @@ using System.Linq;
 using System.Web;
 using Nancy;
 using DinnerParty.Models;
+using Nancy.Authentication.Forms;
 
 namespace DinnerParty.Modules
 {
-    public class HomeModule : NancyModule
+    public class HomeModule : BaseModule
     {
         public HomeModule()
         {
             Get["/"] = parameters =>
             {
-                var model = new Home() { Header = "Welcome to DinnerParty", Body = "A Nerddinner port" };
+                base.Page.Title = "Home";
 
-                return View["Index", model];
+                return View["Index", base.Model]; 
             };
+
+            Get["/About"] = parameters =>
+            {
+                base.Page.Title = "About";
+
+                return View["About", base.Model];
+            };
+
         }
+
     }
 }

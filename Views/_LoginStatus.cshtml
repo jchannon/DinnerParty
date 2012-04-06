@@ -1,0 +1,9 @@
+﻿
+@if (Model.Page.IsAuthenticated)
+{
+   @* <text>Welcome <b>@(((NerdIdentity)HttpContext.Current.User.Identity).FriendlyName)</b>!
+    [ @Html.ActionLink("Log Off", "LogOff", "Account") ]</text>*@
+}
+else {
+    <a href="">Log On</a>
+}
