@@ -43,9 +43,14 @@
     <Reference Include="Nancy.Hosting.Aspnet">
       <HintPath>packages\Nancy.Hosting.Aspnet.0.10.0\lib\net40\Nancy.Hosting.Aspnet.dll</HintPath>
     </Reference>
+    <Reference Include="Nancy.Validation.DataAnnotations, Version=0.10.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Nancy.Validation.DataAnnotations.0.10.0\lib\net40\Nancy.Validation.DataAnnotations.dll</HintPath>
+    </Reference>
     <Reference Include="Nancy.ViewEngines.Razor">
       <HintPath>packages\Nancy.Viewengines.Razor.0.10.0\lib\net40\Nancy.ViewEngines.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -84,11 +89,20 @@
     </EmbeddedResource>
     <Content Include="Views\_Masthead.cshtml" />
     <Content Include="Views\_LoginStatus.cshtml" />
+    <Content Include="Views\Account\LogOn.cshtml" />
+    <Content Include="Views\Account\_LogonNative.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="HTMLExtensions\HtmlExtensions.cs" />
+    <Compile Include="Models\CustomAnnotations\CustomDataAdapter.cs" />
+    <Compile Include="Models\CustomAnnotations\CustomDataAnnotations.cs" />
     <Compile Include="Models\Home.cs" />
     <Compile Include="Models\PageModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Modules\AccountModule.cs" />
     <Compile Include="Modules\BaseModule.cs" />
     <Compile Include="Modules\DinnerModule.cs" />
     <Compile Include="Modules\HomeModule.cs" />
@@ -98,6 +112,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="UserIdentity.cs" />
+    <Compile Include="UserMapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

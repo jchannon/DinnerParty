@@ -1,0 +1,23 @@
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<dynamic>
+
+@{
+  Layout = "_Layout.cshtml";
+}   
+
+<h2>@Model.Page.Title</h2>
+
+@section HeadArea {
+   @* <link rel="Stylesheet" type="text/css" href="@Url.Action("OpenIdSelector", "Resource")" />
+    <link rel="Stylesheet" type="text/css" href="@Url.Action("OpenIdAjaxTextBox", "Resource")" />
+    <script src="@Url.Content("~/Scripts/jquery.cookie.js")" type="text/javascript"></script>    
+    @MvcHtmlString.Create(Html.OpenIdSelectorStyles())*@
+}
+
+@*@Html.ValidationSummary(true, "Login was unsuccessful. Please correct the errors and try again.")
+@Html.ValidationMessage("_FORM")*@
+
+@*@Html.Partial("_LogonOpenId")
+<div id="or">
+    OR</div>*@
+
+@Html.Partial("_LogonNative", Model)

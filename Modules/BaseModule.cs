@@ -31,7 +31,9 @@ namespace DinnerParty.Modules
                 Page = new PageModel()
                 {
                     IsAuthenticated = ctx.CurrentUser != null,
-                    PreFixTitle = "Dinner Party - "
+                    PreFixTitle = "Dinner Party - ",
+                    CurrentUser = ctx.CurrentUser != null ? ctx.CurrentUser.UserName : "",
+                    Errors = Enumerable.Empty<Nancy.Validation.ModelValidationError>()
                 };
 
                 Model.Page = Page;

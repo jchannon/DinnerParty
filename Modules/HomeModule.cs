@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using Nancy;
 using DinnerParty.Models;
-using Nancy.Authentication.Forms;
+
 
 namespace DinnerParty.Modules
 {
@@ -19,12 +19,14 @@ namespace DinnerParty.Modules
                 return View["Index", base.Model]; 
             };
 
-            Get["/About"] = parameters =>
+            Get["/about"] = parameters =>
             {
                 base.Page.Title = "About";
 
                 return View["About", base.Model];
             };
+
+           
 
         }
 
