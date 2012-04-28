@@ -37,8 +37,7 @@ namespace DinnerParty.Modules
                     {
                         base.Page.Title = "Login";
                         base.Model.Page.Errors = result.Errors;
-
-
+                        
                         base.Model.LoginModel = model;
 
                         return View["LogOn", base.Model];

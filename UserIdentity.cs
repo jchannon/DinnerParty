@@ -19,5 +19,7 @@ namespace DinnerParty
             get;
             set;
         }
+
+        public string FriendlyName { get; set; }
     }
 }

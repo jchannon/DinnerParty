@@ -39,16 +39,16 @@
 
     function onMapLoaded() {
         NerdDinner.LoadMap();
-
+       
         Sys.Application.set_enableHistory(true);
         Sys.Application.add_navigate(OnNavigation);
 
-        NerdDinner.ipInfoDbKey = '';@*  '@System.Configuration.ConfigurationManager.AppSettings["ipInfoDbKey"]';*@
-        NerdDinner.BingMapsKey = ''; @*'@System.Configuration.ConfigurationManager.AppSettings["BingMapsKey"]';*@
+        NerdDinner.ipInfoDbKey = '@System.Configuration.ConfigurationManager.AppSettings["ipInfoDbKey"]';
+        NerdDinner.BingMapsKey = '@System.Configuration.ConfigurationManager.AppSettings["BingMapsKey"]';
         yepnope({
             test: Modernizr.geolocation,
-            yep: '@Url.Content("~/Scripts/geo.js")',
-            nope: '@Url.Content("~/Scripts/geo-polyfill.js")',
+            yep: '@Url.Content("~/Content/Scripts/geo.js")',
+            nope: '@Url.Content("~/Content/Scripts/geo-polyfill.js")',
             callback: function (url, result, key) {
                 OnNavigation();
             }

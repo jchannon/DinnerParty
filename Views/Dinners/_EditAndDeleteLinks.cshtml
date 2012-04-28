@@ -1,0 +1,8 @@
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<dynamic>
+
+@if (Model.Dinner.IsHostedBy(Model.Page.CurrentUser)) { 
+    <a href="/dinners/edit/@Model.Dinner.DinnerID">Edit Dinner</a>
+    <text>|</text>
+     <a href="/dinners/delete/@Model.Dinner.DinnerID">Delete Dinner</a>
+
+}

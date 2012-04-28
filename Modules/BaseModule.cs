@@ -5,6 +5,7 @@ using System.Web;
 using Nancy;
 using System.Dynamic;
 using DinnerParty.Models;
+using Raven.Client;
 
 namespace DinnerParty.Modules
 {
@@ -12,6 +13,8 @@ namespace DinnerParty.Modules
     {
         public dynamic Model = new ExpandoObject();
         protected PageModel Page { get; set; }
+
+       
 
         public BaseModule()
         {
@@ -40,7 +43,8 @@ namespace DinnerParty.Modules
 
                 return null;
             };
-
         }
+
+       
     }
 }

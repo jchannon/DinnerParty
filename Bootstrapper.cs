@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Nancy;
+﻿using Nancy;
 using System.IO;
 using DinnerParty.Properties;
 using Nancy.Authentication.Forms;
-using Nancy.ModelBinding;
 using Nancy.Validation.DataAnnotations;
 using DinnerParty.Models.CustomAnnotations;
+using Nancy.Bootstrapper;
+using DinnerParty.Models.RavenDB;
+using Nancy.Diagnostics;
+using System;
+using System.Collections.Generic;
 
 namespace DinnerParty
 {
@@ -16,21 +16,21 @@ namespace DinnerParty
     {
         private byte[] favicon;
 
-        protected override byte[] DefaultFavIcon
-        {
-            get
-            {
-                if (favicon == null)
-                {
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        Resources.favicon.Save(ms);
-                        favicon = ms.ToArray();
-                    }
-                }
-                return favicon;
-            }
-        }
+        //protected override byte[] DefaultFavIcon
+        //{
+        //    get
+        //    {
+        //        if (favicon == null)
+        //        {
+        //            using (MemoryStream ms = new MemoryStream())
+        //            {
+        //                Resources.favicon.Save(ms);
+        //                favicon = ms.ToArray();
+        //            }
+        //        }
+        //        return favicon;
+        //    }
+        //}
 
         protected override void ApplicationStartup(TinyIoC.TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines)
         {
@@ -38,7 +38,7 @@ namespace DinnerParty
 
             DataAnnotationsValidator.RegisterAdapter(typeof(MatchAttribute), (v, d) => new CustomDataAdapter((MatchAttribute)v));
         }
-     
+
         protected override void RequestStartup(TinyIoC.TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines, NancyContext context)
         {
             base.RequestStartup(container, pipelines, context);
@@ -52,7 +52,7 @@ namespace DinnerParty
             var formsAuthConfiguration =
                 new FormsAuthenticationConfiguration()
                 {
-                    RedirectUrl = "~/login",
+                    RedirectUrl = "~/account/logon",
                     UserMapper = container.Resolve<IUserMapper>(),
                 };
 
@@ -64,11 +64,34 @@ namespace DinnerParty
             base.ConfigureRequestContainer(container, context);
 
             container.Register<IUserMapper, UserMapper>();
-       
-            
+
+
         }
 
-       
+        protected override Nancy.Bootstrapper.NancyInternalConfiguration InternalConfiguration
+        {
+            get
+            {
+                var config = NancyInternalConfiguration.WithOverrides(x => x.NancyModuleBuilder = typeof(RavenAwareModuleBuilder));
+                
+                //config = config.ErrorHandlers = new List<Type>
+                //                              {
+                //                                  typeof (ErrorHandlers.Generic404ErrorHandler),
+                //                                  typeof (Api.ErrorHandlers.Api404ErrorHandler),
+                //                                  typeof (Nancy.ErrorHandling.DefaultErrorHandler),
+                //                              };
+
+                return config;
+            }
+        }
+
+        protected override Nancy.Diagnostics.DiagnosticsConfiguration DiagnosticsConfiguration
+        {
+
+            get { return new DiagnosticsConfiguration { Password = @"nancy" }; }
+
+        }
+
         
     }
 }

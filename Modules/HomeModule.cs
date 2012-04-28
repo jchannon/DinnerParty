@@ -16,7 +16,7 @@ namespace DinnerParty.Modules
             {
                 base.Page.Title = "Home";
 
-                return View["Index", base.Model]; 
+                return View["Index", base.Model];
             };
 
             Get["/about"] = parameters =>
