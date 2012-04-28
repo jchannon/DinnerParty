@@ -14,27 +14,22 @@ namespace DinnerParty.Modules
     {
         public static Response AsRSS(this IResponseFormatter formatter, IEnumerable<Dinner> model, string RSSTitle)
         {
-            return new RSSResponse(model, "application/rss+xml", RSSTitle, formatter.Context.Request.Url);
+            return new RSSResponse(model, RSSTitle, formatter.Context.Request.Url);
         }
     }
 
-    public class RSSResponse: Response
+    public class RSSResponse : Response
     {
         private string RSSTitle { get; set; }
         private Uri URL { get; set; }
 
-        public RSSResponse(IEnumerable<Dinner> model, string contentType, string RSSTitle, Uri URL)
+        public RSSResponse(IEnumerable<Dinner> model, string RSSTitle, Uri URL)
         {
-            //if (serializer == null)
-            //{
-            //    throw new InvalidOperationException("XML Serializer not set");
-            //}
-
             this.RSSTitle = RSSTitle; ;
             this.URL = URL;
 
             this.Contents = GetXmlContents(model);
-            this.ContentType = contentType;
+            this.ContentType = "application/rss+xml";
             this.StatusCode = HttpStatusCode.OK;
         }
 
