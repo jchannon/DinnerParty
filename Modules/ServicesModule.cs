@@ -17,7 +17,11 @@ namespace DinnerParty.Modules
                     var dinners = DocumentSession.Query<Dinner>().Where(d => d.EventDate > DateTime.UtcNow).OrderBy(x => x.EventDate).AsEnumerable();
 
                     if (dinners == null)
-                        return View["NotFound"];
+                    {
+                        base.Page.Title = "Nerd Dinner Not Found";
+                        return View["NotFound", base.Model];
+                    }
+
                     return this.Response.AsRSS(dinners, "Upcoming Nerd Dinners");
                 };
         }
