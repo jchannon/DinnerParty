@@ -8,7 +8,23 @@ namespace DinnerParty.Models
 {
     public class Dinner
     {
-        public string Id { get; set; }
+        /// <summary>
+        /// Id (in that exact case) is used by Raven.
+        /// If on a Url of /dinners/edit/162 Nancy will bind the Id property to 162 so,
+        /// we have to make sure that it starts with dinners/ so Raven can identify it properly
+        /// </summary>
+        private string id;
+        public string Id
+        {
+            get { return id; }
+            set
+            {
+                if (!value.StartsWith("dinners"))
+                    value = "dinners/" + value;
+
+                id = value;
+            }
+        }
 
         //[HiddenInput(DisplayValue = false)]
         [JsonIgnore]

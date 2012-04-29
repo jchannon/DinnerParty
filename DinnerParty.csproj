@@ -217,6 +217,7 @@
     <Content Include="Views\Dinners\InvalidOwner.cshtml" />
     <Content Include="Views\Dinners\Delete.cshtml" />
     <Content Include="Views\Dinners\Deleted.cshtml" />
+    <Content Include="Views\Dinners\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />

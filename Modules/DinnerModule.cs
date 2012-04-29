@@ -10,6 +10,7 @@ using DinnerParty.Helpers;
 using Nancy.RouteHelpers;
 using Nancy.ModelBinding;
 using Nancy.Validation;
+using System.ComponentModel;
 
 namespace DinnerParty.Modules
 {
@@ -198,6 +199,70 @@ namespace DinnerParty.Modules
                     base.Page.Title = "Deleted";
                     return View["Deleted", base.Model];
                 };
+
+            Get["/edit" + Route.And() + Route.AnyIntAtLeastOnce("id")] = parameters =>
+                {
+                    Dinner dinner = DocumentSession.Load<Dinner>((int)parameters.id);
+
+                    if (dinner == null)
+                    {
+                        base.Page.Title = "Nerd Dinner Not Found";
+                        return View["NotFound", base.Model];
+                    }
+
+                    if (!dinner.IsHostedBy(this.Context.CurrentUser.UserName))
+                    {
+                        base.Page.Title = "You Don't Own This Dinner";
+                        return View["InvalidOwner", base.Model];
+                    }
+
+                    base.Page.Title = "Edit: " + dinner.Title;
+                    base.Model.Dinner = dinner;
+
+                    return View["Edit", base.Model];
+                };
+
+            Post["/edit" + Route.And() + Route.AnyIntAtLeastOnce("id")] = parameters =>
+                {
+                    Dinner dinner = DocumentSession.Load<Dinner>((int)parameters.id);
+
+                    if (!dinner.IsHostedBy(this.Context.CurrentUser.UserName))
+                    {
+                        base.Page.Title = "You Don't Own This Dinner";
+                        return View["InvalidOwner", base.Model];
+                    }
+
+
+                    Dinner boundDinner = this.Bind<Dinner>();
+                    var result = this.Validate(boundDinner);
+
+                    if (!result.IsValid)
+                    {
+                        base.Page.Title = "Edit: " + dinner.Title;
+                        base.Model.Dinner = boundDinner;
+                        base.Model.Page.Errors = result.Errors;
+
+                        return View["Edit", base.Model];
+                    }
+
+                    //Need to copy properties to instance retrieved via Raven
+                    //If we used dinner = this.Bind<Dinner>() it would return a new instance and 
+                    //therefore Raven would not be able to track the changes
+                    CopyProperties(dinner, boundDinner);
+                  
+                    DocumentSession.SaveChanges();
+
+                    return this.Response.AsRedirect("/" + dinner.DinnerID);
+
+                };
+        }
+
+        private void CopyProperties(object dest, object src)
+        {
+            foreach (PropertyDescriptor item in TypeDescriptor.GetProperties(src))
+            {
+                item.SetValue(dest, item.GetValue(src));
+            }
         }
     }
 }
