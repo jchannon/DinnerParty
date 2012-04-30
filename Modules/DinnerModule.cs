@@ -232,37 +232,39 @@ namespace DinnerParty.Modules
                         return View["InvalidOwner", base.Model];
                     }
 
+                    this.BindTo(dinner);
 
-                    Dinner boundDinner = this.Bind<Dinner>();
-                    var result = this.Validate(boundDinner);
+                    var result = this.Validate(dinner);
 
                     if (!result.IsValid)
                     {
                         base.Page.Title = "Edit: " + dinner.Title;
-                        base.Model.Dinner = boundDinner;
+                        base.Model.Dinner = dinner;
                         base.Model.Page.Errors = result.Errors;
 
                         return View["Edit", base.Model];
                     }
 
-                    //Need to copy properties to instance retrieved via Raven
-                    //If we used dinner = this.Bind<Dinner>() it would return a new instance and 
-                    //therefore Raven would not be able to track the changes
-                    CopyProperties(dinner, boundDinner);
-                  
                     DocumentSession.SaveChanges();
 
                     return this.Response.AsRedirect("/" + dinner.DinnerID);
 
                 };
-        }
 
-        private void CopyProperties(object dest, object src)
-        {
-            foreach (PropertyDescriptor item in TypeDescriptor.GetProperties(src))
-            {
-                item.SetValue(dest, item.GetValue(src));
-            }
+            Get["/my"] = parameters =>
+                {
+                    string nerdName = this.Context.CurrentUser.UserName;
+
+                    var userDinners = DocumentSession.Query<Dinner>()
+                                    .Where(x => x.HostedById == nerdName || x.HostedBy == nerdName || x.RSVPs.Any(r => r.AttendeeNameId == nerdName || (r.AttendeeNameId == null && r.AttendeeName == nerdName)))
+                                    .OrderBy(x => x.EventDate)
+                                    .AsEnumerable();
+
+                    base.Page.Title = "My Dinners";
+                    base.Model.Dinners = userDinners;
+
+                    return View["My", base.Model];
+                };
         }
     }
 }

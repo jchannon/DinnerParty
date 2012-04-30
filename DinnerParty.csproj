@@ -218,8 +218,10 @@
     <Content Include="Views\Dinners\Delete.cshtml" />
     <Content Include="Views\Dinners\Deleted.cshtml" />
     <Content Include="Views\Dinners\Edit.cshtml" />
+    <Content Include="Views\Dinners\My.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BindExtensions.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Helpers\CountryList.cs" />
     <Compile Include="Helpers\FileNotFoundResult.cs" />

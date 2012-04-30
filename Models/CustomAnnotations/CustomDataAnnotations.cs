@@ -16,7 +16,7 @@ namespace DinnerParty.Models.CustomAnnotations
 
         public MatchAttribute(string source, string match)
         {
-            SourceProperty = source; 
+            SourceProperty = source;
             MatchProperty = match;
         }
 
@@ -25,7 +25,7 @@ namespace DinnerParty.Models.CustomAnnotations
         {
             return this.ErrorMessage;
         }
-        
+
 
         public override Boolean IsValid(Object value)
         {
@@ -51,12 +51,14 @@ namespace DinnerParty.Models.CustomAnnotations
                     if (counter == 0)
                     {
                         sourceValue = propertyInfo.GetValue(value, null);
-                        sourceType = propertyInfo.GetValue(value, null).GetType();
+                        if (sourceValue != null)
+                            sourceType = propertyInfo.GetValue(value, null).GetType();
                     }
                     if (counter == 1)
                     {
                         matchValue = propertyInfo.GetValue(value, null);
-                        matchType = propertyInfo.GetValue(value, null).GetType();
+                        if (matchValue != null)
+                            matchType = propertyInfo.GetValue(value, null).GetType();
                     }
                     counter++;
                     if (counter == 2)
@@ -75,7 +77,7 @@ namespace DinnerParty.Models.CustomAnnotations
         }
     }
 
-   
+
 
 
 }

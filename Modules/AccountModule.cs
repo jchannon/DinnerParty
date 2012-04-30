@@ -23,7 +23,7 @@ namespace DinnerParty.Modules
                 var loginModel = new LoginModel();
                 base.Model.LoginModel = loginModel;
 
-                return View["LogOn", base.Model];
+                return View["LogOn", base.Model]; 
             };
 
             Post["/logon"] = parameters =>
