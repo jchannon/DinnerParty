@@ -23,7 +23,7 @@
 </p>
 
 <form method="post">
-	@Html.ValidationSummary((IEnumerable<ModelValidationError>)Model.Page.Errors)
+	@Html.ValidationSummary((List<DinnerParty.Models.ErrorModel>)Model.Page.Errors)
     
 	<div>
 		<fieldset>
@@ -31,6 +31,10 @@
 			<p>
                 <label for="UserName">UserName</label>
                 <input type="text" name="UserName" value="@Model.RegisterModel.UserName" />
+			</p>
+            <p>
+                <label for="Name">Name</label>
+                <input type="text" name="Name" value="@Model.RegisterModel.Name" />
 			</p>
 			<p>
                 <label for="Email">Email</label>

@@ -9,6 +9,8 @@ using DinnerParty.Models.RavenDB;
 using Nancy.Diagnostics;
 using System;
 using System.Collections.Generic;
+using Raven.Client;
+using TinyIoC;
 
 namespace DinnerParty
 {
@@ -37,6 +39,18 @@ namespace DinnerParty
             base.ApplicationStartup(container, pipelines);
 
             DataAnnotationsValidator.RegisterAdapter(typeof(MatchAttribute), (v, d) => new CustomDataAdapter((MatchAttribute)v));
+
+            Func<TinyIoCContainer, NamedParameterOverloads, IDocumentSession> factory = (ioccontainer, namedparams) => { return new RavenSessionProvider().GetSession(); };
+            container.Register<IDocumentSession>(factory);
+
+            container.Register<IUserMapper, UserMapper>();
+
+
+            pipelines.OnError += (context, exception) =>
+            {
+                Elmah.ErrorSignal.FromCurrentContext().Raise(exception);
+                return null;
+            };
         }
 
         protected override void RequestStartup(TinyIoC.TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines, NancyContext context)
@@ -61,11 +75,7 @@ namespace DinnerParty
 
         protected override void ConfigureRequestContainer(TinyIoC.TinyIoCContainer container, NancyContext context)
         {
-            base.ConfigureRequestContainer(container, context);
-
-            container.Register<IUserMapper, UserMapper>();
-
-
+            base.ConfigureRequestContainer(container, context);         
         }
 
         protected override Nancy.Bootstrapper.NancyInternalConfiguration InternalConfiguration
@@ -73,7 +83,7 @@ namespace DinnerParty
             get
             {
                 var config = NancyInternalConfiguration.WithOverrides(x => x.NancyModuleBuilder = typeof(RavenAwareModuleBuilder));
-                
+
                 //config = config.ErrorHandlers = new List<Type>
                 //                              {
                 //                                  typeof (ErrorHandlers.Generic404ErrorHandler),
@@ -92,6 +102,6 @@ namespace DinnerParty
 
         }
 
-        
+
     }
 }

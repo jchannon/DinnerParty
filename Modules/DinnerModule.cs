@@ -148,7 +148,13 @@ namespace DinnerParty.Modules
                     {
                         base.Page.Title = "Host a Nerd Dinner";
                         base.Model.Dinner = dinner;
-                        base.Model.Page.Errors = result.Errors;
+                        foreach (var item in result.Errors)
+                        {
+                            foreach (var member in item.MemberNames)
+                            {
+                                base.Page.Errors.Add(new ErrorModel() { Name = member, ErrorMessage = item.GetMessage(member) });
+                            }
+                        }
                     }
 
                     return View["Create", base.Model];
@@ -240,7 +246,13 @@ namespace DinnerParty.Modules
                     {
                         base.Page.Title = "Edit: " + dinner.Title;
                         base.Model.Dinner = dinner;
-                        base.Model.Page.Errors = result.Errors;
+                        foreach (var item in result.Errors)
+                        {
+                            foreach (var member in item.MemberNames)
+                            {
+                                base.Page.Errors.Add(new ErrorModel() { Name = member, ErrorMessage = item.GetMessage(member) });
+                            }
+                        }
 
                         return View["Edit", base.Model];
                     }

@@ -12,6 +12,6 @@ namespace DinnerParty.Models
         public string Title { get; set; }
         public bool IsAuthenticated { get; set; }
         public string CurrentUser { get; set; }
-        public IEnumerable<Nancy.Validation.ModelValidationError> Errors { get; set; }
+        public List<ErrorModel> Errors { get; set; }
     }
 }

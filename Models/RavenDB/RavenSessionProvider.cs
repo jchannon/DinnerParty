@@ -36,5 +36,7 @@ namespace DinnerParty.Models.RavenDB
             var session = DocumentStore.OpenSession();
             return session;
         }
+
+       
     }
 }

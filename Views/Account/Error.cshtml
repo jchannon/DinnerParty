@@ -1,0 +1,14 @@
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<dynamic>
+
+@{
+    Layout = "_Layout.cshtml";
+}
+
+<h2>
+	Login Error
+</h2>
+
+<div>
+	<p>There has been a login problem: 
+	<i> @Model.LoginModel </i> </p>
+</div>

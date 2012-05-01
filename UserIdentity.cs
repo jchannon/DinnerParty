@@ -21,5 +21,7 @@ namespace DinnerParty
         }
 
         public string FriendlyName { get; set; }
+
+      
     }
 }

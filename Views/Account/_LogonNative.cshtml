@@ -12,12 +12,12 @@
             <p>
                 <label for="Username">Username</label>
                 <input type="text" name="Username" value="@Model.LoginModel.UserName" />
-                @Html.ValidationMessageFor((IEnumerable<Nancy.Validation.ModelValidationError>)Model.Page.Errors, "UserName")
+                @Html.ValidationMessageFor((List<DinnerParty.Models.ErrorModel>)Model.Page.Errors, "UserName")
             </p>
             <p>
                 <label for="Password">Password</label>
                 <input type="password" name="Password" value="@Model.LoginModel.Password" />
-                @Html.ValidationMessageFor((IEnumerable<Nancy.Validation.ModelValidationError>)Model.Page.Errors, "Password")
+                @Html.ValidationMessageFor((List<DinnerParty.Models.ErrorModel>)Model.Page.Errors, "Password")
             </p>
             <p>
                @Html.CheckBox("RememberMe", (bool)Model.LoginModel.RememberMe)

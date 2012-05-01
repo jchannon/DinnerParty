@@ -30,7 +30,7 @@ namespace DinnerParty.HtmlExtensions
             return new Nancy.ViewEngines.Razor.NonEncodedHtmlString(input);
         }
 
-        public static Nancy.ViewEngines.Razor.IHtmlString ValidationSummary<T>(this IHtmlHelpers<T> helper, IEnumerable<Nancy.Validation.ModelValidationError> Errors)
+        public static Nancy.ViewEngines.Razor.IHtmlString ValidationSummary<T>(this IHtmlHelpers<T> helper, List<DinnerParty.Models.ErrorModel> Errors)
         {
 
             if (!Errors.Any())
@@ -40,10 +40,9 @@ namespace DinnerParty.HtmlExtensions
 
             foreach (var item in Errors)
             {
-                foreach (var member in item.MemberNames)
-                {
-                    div += "<li>" + item.GetMessage(member) + "</li>";
-                }
+
+                div += "<li>" + item.ErrorMessage + "</li>";
+
             }
 
             div += "</ul></div>";
@@ -51,23 +50,21 @@ namespace DinnerParty.HtmlExtensions
             return new NonEncodedHtmlString(div);
         }
 
-        public static Nancy.ViewEngines.Razor.IHtmlString ValidationMessageFor<T>(this IHtmlHelpers<T> helper, IEnumerable<Nancy.Validation.ModelValidationError> Errors, string PropertyName)
+        public static Nancy.ViewEngines.Razor.IHtmlString ValidationMessageFor<T>(this IHtmlHelpers<T> helper, List<DinnerParty.Models.ErrorModel> Errors, string PropertyName)
         {
             if (!Errors.Any())
                 return new NonEncodedHtmlString("");
 
-            string span= String.Empty;
+            string span = String.Empty;
 
             foreach (var item in Errors)
             {
-                foreach (var member in item.MemberNames)
+                if (item.Name == PropertyName)
                 {
-                    if (member == PropertyName)
-                    {
-                        span += "<span class=\"field-validation-error\">" + item.GetMessage(member) + "</span>";
-                        break;
-                    }
+                    span += "<span class=\"field-validation-error\">" + item.ErrorMessage+ "</span>";
+                    break;
                 }
+
             }
 
             return new NonEncodedHtmlString(span);

@@ -14,7 +14,7 @@ namespace DinnerParty.Modules
         public dynamic Model = new ExpandoObject();
         protected PageModel Page { get; set; }
 
-       
+
 
         public BaseModule()
         {
@@ -36,7 +36,7 @@ namespace DinnerParty.Modules
                     IsAuthenticated = ctx.CurrentUser != null,
                     PreFixTitle = "Dinner Party - ",
                     CurrentUser = ctx.CurrentUser != null ? ctx.CurrentUser.UserName : "",
-                    Errors = Enumerable.Empty<Nancy.Validation.ModelValidationError>()
+                    Errors = new List<ErrorModel>()
                 };
 
                 Model.Page = Page;
@@ -45,6 +45,6 @@ namespace DinnerParty.Modules
             };
         }
 
-       
+
     }
 }

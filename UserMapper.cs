@@ -5,44 +5,84 @@ using System.Web;
 using Nancy.Authentication.Forms;
 using Nancy.Security;
 using DinnerParty.Models;
+using Raven.Client;
+using DinnerParty.Models.RavenDB;
+using System.Security.Cryptography;
+using System.Text;
+using Raven.Client.Document;
 
 namespace DinnerParty
 {
     public class UserMapper : IUserMapper
     {
-        private static List<Tuple<string, string, string, Guid>> users = new List<Tuple<string, string, string, Guid>>();
+        private IDocumentSession DocumentSession;
 
-        static UserMapper()
+        public UserMapper(IDocumentSession DocumentSession)
         {
-            users.Add(new Tuple<string, string, string, Guid>("admin", "John Hamm", "password", new Guid("55E1E49E-B7E8-4EEA-8459-7A906AC4D4C0")));
-            users.Add(new Tuple<string, string, string, Guid>("user", "Jack Black", "password", new Guid("56E1E49E-B7E8-4EEA-8459-7A906AC4D4C0")));
+            this.DocumentSession = DocumentSession;
+
         }
 
         public IUserIdentity GetUserFromIdentifier(Guid identifier)
         {
-            var userRecord = users.Where(u => u.Item4 == identifier).FirstOrDefault();
+            var userRecord = DocumentSession.Query<UserModel>().Where(x => x.UserId == identifier).FirstOrDefault();
 
-            return userRecord == null
-                       ? null
-                       : new UserIdentity { UserName = userRecord.Item1, FriendlyName = userRecord.Item2 };
+            return userRecord == null ? null : new UserIdentity() { UserName = userRecord.Username, FriendlyName = userRecord.FriendlyName };
         }
 
-        public static Guid? ValidateUser(string username, string password)
+        public Guid? ValidateUser(string username, string password)
         {
-            var userRecord = users.Where(u => u.Item1 == username && u.Item3 == password).FirstOrDefault();
+            var userRecord = DocumentSession.Query<UserModel>().Where(x => x.Username == username && x.Password == EncodePassword(password)).FirstOrDefault();
 
             if (userRecord == null)
             {
                 return null;
             }
 
-            return userRecord.Item4;
+            return userRecord.UserId;
         }
 
-        public static Guid? ValidateRegisterNewUser(RegisterModel newUser)
+        public Guid? ValidateRegisterNewUser(RegisterModel newUser)
         {
-            return new Guid("56E1E49E-B7E8-4EEA-8459-7A906AC4D4C0");
+            var userRecord = new UserModel()
+            {
+                UserId = Guid.NewGuid(),
+                LoginType = "DinnerParty",
+                EMailAddress = newUser.Email,
+                FriendlyName = newUser.Name,
+                Username = newUser.UserName,
+                Password = EncodePassword(newUser.Password)
+            };
+
+            var existingUser = DocumentSession.Query<UserModel>().Where(x => x.EMailAddress == userRecord.EMailAddress && x.LoginType == "DinnerParty").FirstOrDefault();
+            if (existingUser != null)
+                return null;
+
+            DocumentSession.Store(userRecord);
+            DocumentSession.SaveChanges();
+
+            return userRecord.UserId;
         }
+
+        private string EncodePassword(string originalPassword)
+        {
+            if (originalPassword == null)
+                return String.Empty;
+
+            //Declarations
+            Byte[] originalBytes;
+            Byte[] encodedBytes;
+            MD5 md5;
+
+            //Instantiate MD5CryptoServiceProvider, get bytes for original password and compute hash (encoded password)
+            md5 = new MD5CryptoServiceProvider();
+            originalBytes = ASCIIEncoding.Default.GetBytes(originalPassword);
+            encodedBytes = md5.ComputeHash(originalBytes);
+
+            //Convert encoded bytes back to a 'readable' string
+            return BitConverter.ToString(encodedBytes);
+        }
+
 
     }
 }

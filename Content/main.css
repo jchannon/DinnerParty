@@ -325,19 +325,31 @@ strong {
 
 #disqus_thread { clear: both; padding-top: 15px; }
 
-#login-oauth, #login-account
+#login
 {
-    float: left;
-    width: 330px;
-    height: 210px;
+	width: 401px;
+	margin:0 auto;
+	padding:0;
+}
+
+#login-account
+{
+    width: 370px;
     border: 1px dotted black;
     padding: 10px;
 }
+
+.login-oauth
+{
+    width: 392px;
+    padding: 0px;
+}
+
 #login-oauth-container
 {
     margin-top: 30px;
 }
-#login-oauth h3, #login-account h3
+.login-oauth h3, #login-account h3
 {
     font-size: 22px;
     font-weight: bold;
@@ -355,14 +367,17 @@ strong {
     float: left;
     margin-right: 5px;
 }
+
 #or
 {
-    float: left;
-    margin-top: 40px;
-    margin-right: 20px;
-    margin-left: 20px;
+	width: 392px;
     font-size: x-large;
+    padding:0;
+    display:block;
 }
+
+#or p{text-align:center;}
+
 #openid_identifier
 {
     font-size: large;
