@@ -11,6 +11,7 @@ using Nancy.RouteHelpers;
 using Nancy.ModelBinding;
 using Nancy.Validation;
 using System.ComponentModel;
+using DinnerParty.Models.RavenDB;
 
 namespace DinnerParty.Modules
 {
@@ -55,7 +56,7 @@ namespace DinnerParty.Modules
                 }
                 else
                 {
-                    dinners = DocumentSession.Query<Dinner>().Where(d => d.EventDate > DateTime.UtcNow).OrderBy(x => x.EventDate);
+                    dinners = DocumentSession.Query<Dinner, IndexEventDate>().Where(d => d.EventDate > DateTime.Now.Date).OrderBy(x => x.EventDate);
                 }
 
                 int pageIndex = parameters.page.HasValue && !String.IsNullOrWhiteSpace(parameters.page) ? parameters.page : 1;
@@ -267,7 +268,7 @@ namespace DinnerParty.Modules
                 {
                     string nerdName = this.Context.CurrentUser.UserName;
 
-                    var userDinners = DocumentSession.Query<Dinner>()
+                    var userDinners = DocumentSession.Query<Dinner, IndexMyDinners>()
                                     .Where(x => x.HostedById == nerdName || x.HostedBy == nerdName || x.RSVPs.Any(r => r.AttendeeNameId == nerdName || (r.AttendeeNameId == null && r.AttendeeName == nerdName)))
                                     .OrderBy(x => x.EventDate)
                                     .AsEnumerable();

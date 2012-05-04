@@ -18,21 +18,21 @@ namespace DinnerParty
     {
         private byte[] favicon;
 
-        //protected override byte[] DefaultFavIcon
-        //{
-        //    get
-        //    {
-        //        if (favicon == null)
-        //        {
-        //            using (MemoryStream ms = new MemoryStream())
-        //            {
-        //                Resources.favicon.Save(ms);
-        //                favicon = ms.ToArray();
-        //            }
-        //        }
-        //        return favicon;
-        //    }
-        //}
+        protected override byte[] DefaultFavIcon
+        {
+            get
+            {
+                if (favicon == null)
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        Resources.favicon.Save(ms);
+                        favicon = ms.ToArray();
+                    }
+                }
+                return favicon;
+            }
+        }
 
         protected override void ApplicationStartup(TinyIoC.TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines)
         {
@@ -45,6 +45,12 @@ namespace DinnerParty
 
             container.Register<IUserMapper, UserMapper>();
 
+           
+
+            Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(IndexEventDate).Assembly, RavenSessionProvider.DocumentStore);
+            Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(IndexUserLoginType).Assembly, RavenSessionProvider.DocumentStore);
+            Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(IndexMostPopularDinners).Assembly, RavenSessionProvider.DocumentStore);
+            Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(IndexMyDinners).Assembly, RavenSessionProvider.DocumentStore);
 
             pipelines.OnError += (context, exception) =>
             {

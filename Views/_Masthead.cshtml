@@ -4,7 +4,8 @@
         <div id="searchBox">
             <div class="search-text">
                 Enter your location or <strong><a href="/dinners">View All Upcoming Dinners</a></strong>.</div>
-            <input id="Location" name="Location" type="text" value="" />            <input id="search" type="submit" value="Search" />
+            <input id="Location" name="Location" type="text" value="" />
+            <input id="search" type="submit" value="Search" />
         </div>
         
         <script type="text/javascript">
@@ -22,7 +23,9 @@
                 if (where.length < 1)
                     return;
 
-                Sys.Application.addHistoryPoint({ 'where': where });
+                //Taken this out as it endedup calling OnNavigation 
+                //which would search for dinners as well duplicating requests
+                //Sys.Application.addHistoryPoint({ 'where': where });
 
                 NerdDinner.FindDinnersGivenLocation(where);
             }

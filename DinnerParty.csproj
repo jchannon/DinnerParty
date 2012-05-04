@@ -239,10 +239,15 @@
     <Compile Include="Models\DinnerModel.cs" />
     <Compile Include="Models\ErrorModel.cs" />
     <Compile Include="Models\Home.cs" />
+    <Compile Include="Models\JsonDinner.cs" />
     <Compile Include="Models\PageModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\RavenDB\IndexEventDate.cs" />
+    <Compile Include="Models\RavenDB\IndexMyDinners.cs" />
+    <Compile Include="Models\RavenDB\IndexUserLoginType.cs" />
     <Compile Include="Models\RavenDB\RavenAwareModuleBuilder.cs" />
     <Compile Include="Models\RavenDB\RavenSessionProvider.cs" />
+    <Compile Include="Models\RavenDB\IndexMostPopularDinners.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\RSVP.cs" />
     <Compile Include="Models\UserModel.cs" />

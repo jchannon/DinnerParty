@@ -5,58 +5,46 @@ using System.Web;
 using Nancy;
 using DinnerParty.Models;
 using Nancy.RouteHelpers;
+using DinnerParty.Models.RavenDB;
+using Raven.Client.Linq;
 
 namespace DinnerParty.Modules
 {
-    public class JsonDinner
-    {
-        public int DinnerID { get; set; }
-        public DateTime EventDate { get; set; }
-        public string Title { get; set; }
-        public double Latitude { get; set; }
-        public double Longitude { get; set; }
-        public string Description { get; set; }
-        public int RSVPCount { get; set; }
-        public string Url { get; set; }
-    }
+    
 
     public class SearchModule : PersistModule
     {
         public SearchModule()
             : base("/search")
         {
-            Post["/GetMostPopularDinners" + Route.AnyIntOptional("limit")] = parameters =>
+            Post["/GetMostPopularDinners"] = parameters =>
                 {
-                    var dinners = DocumentSession.Query<Dinner>().Where(x => x.EventDate >= DateTime.Now).OrderBy(x => x.EventDate);
-
+                    
                     // Default the limit to 40, if not supplied.
-                    if (!parameters.limit.HasValue || String.IsNullOrWhiteSpace(parameters.limit))
-                        parameters.limit = 40;
+                    if (!this.Request.Form.limit.HasValue || String.IsNullOrWhiteSpace(this.Request.Form.limit))
+                        this.Request.Form.limit = 40;
 
-                    var mostPopularDinners = from dinner in dinners
-                                             orderby dinner.RSVPs.Count descending
-                                             select dinner;
-
-                    var jsonDinners =
-                        mostPopularDinners.Take((int)parameters.limit.Value).AsEnumerable()
-                        .Select(item => JsonDinnerFromDinner(item));
+                    var jsonDinners = DocumentSession.Query<JsonDinner, IndexMostPopularDinners>()
+                        .Where(x => x.EventDate >= DateTime.Now.Date)
+                        .Take((int)this.Request.Form.limit)
+                        .OrderByDescending(x => x.RSVPCount)
+                        .AsProjection<JsonDinner>();
 
                     return Response.AsJson(jsonDinners.ToList());
                 };
 
-            //Post["/SearchByLocation/" + Route.AnyIntAtLeastOnce("latitude") + Route.And() + Route.AnyIntAtLeastOnce("longitude")] = parameters =>
             Post["/SearchByLocation"] = parameters =>
             {
 
                 double latitude = (double)this.Request.Form.latitude;
                 double longitude = (double)this.Request.Form.longitude;
-                var dinners = DocumentSession.Query<Dinner>().Where(x => x.EventDate > DateTime.Now);
+                
+                var dinners = DocumentSession.Query<Dinner, IndexEventDate>()
+                                .Where(x => x.EventDate > DateTime.Now.Date)
+                                .AsEnumerable()
+                                .Where(x => DistanceBetween(x.Latitude, x.Longitude, latitude, longitude) < 1000).Select(x => JsonDinnerFromDinner(x));
 
-                var jsonDinners = from dinner in dinners.AsEnumerable()
-                                  where DistanceBetween(dinner.Latitude, dinner.Longitude, latitude, longitude) < 1000
-                                  select JsonDinnerFromDinner(dinner);
-
-                return Response.AsJson(jsonDinners.ToList());
+                return Response.AsJson(dinners.ToList());
             };
         }
 

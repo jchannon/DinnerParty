@@ -11,6 +11,7 @@ using DinnerParty.Models;
 using System.Configuration;
 using System.Net;
 using Newtonsoft.Json;
+using DinnerParty.Models.RavenDB;
 
 namespace DinnerParty.Modules
 {
@@ -162,7 +163,9 @@ namespace DinnerParty.Modules
                     email = j.profile.email.ToString();
 
                 // var user = _user.GetUserFromUserIdentity(userIdentity);
-                var user = DocumentSession.Query<UserModel>().Where(x => x.LoginType == userIdentity).FirstOrDefault();
+                var user = DocumentSession.Query<UserModel, IndexUserLoginType>().Where(x => x.LoginType == userIdentity).FirstOrDefault();
+
+                username = "";
 
                 if (user == null)
                 {
