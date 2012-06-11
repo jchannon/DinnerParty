@@ -1,6 +1,5 @@
 ﻿using Nancy;
 using System.IO;
-using DinnerParty.Properties;
 using Nancy.Authentication.Forms;
 using Nancy.Validation.DataAnnotations;
 using DinnerParty.Models.CustomAnnotations;
@@ -8,7 +7,6 @@ using Nancy.Bootstrapper;
 using DinnerParty.Models.RavenDB;
 using Nancy.Diagnostics;
 using System;
-using System.Collections.Generic;
 using Raven.Client;
 using TinyIoC;
 
@@ -26,7 +24,7 @@ namespace DinnerParty
                 {
                     using (MemoryStream ms = new MemoryStream())
                     {
-                        Resources.favicon.Save(ms);
+                        Resource1.favicon.Save(ms);
                         favicon = ms.ToArray();
                     }
                 }
