@@ -48,7 +48,7 @@ namespace DinnerParty
            
 
             Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(IndexEventDate).Assembly, RavenSessionProvider.DocumentStore);
-            Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(IndexUserLoginType).Assembly, RavenSessionProvider.DocumentStore);
+            Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(IndexUserLogin).Assembly, RavenSessionProvider.DocumentStore);
             Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(IndexMostPopularDinners).Assembly, RavenSessionProvider.DocumentStore);
             Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(IndexMyDinners).Assembly, RavenSessionProvider.DocumentStore);
 

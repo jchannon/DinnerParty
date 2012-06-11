@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using DinnerParty.Models;
 using Nancy;
+using DinnerParty.Models.RavenDB;
 
 namespace DinnerParty.Modules
 {
@@ -14,7 +15,7 @@ namespace DinnerParty.Modules
         {
             Get["/RSS"] = parameters =>
                 {
-                    var dinners = DocumentSession.Query<Dinner>().Where(d => d.EventDate > DateTime.UtcNow).OrderBy(x => x.EventDate).AsEnumerable();
+                    var dinners = DocumentSession.Query<Dinner, IndexEventDate>().Where(d => d.EventDate > DateTime.Now.Date).OrderBy(x => x.EventDate).AsEnumerable();
 
                     if (dinners == null)
                     {

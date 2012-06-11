@@ -21,7 +21,7 @@ namespace DinnerParty.Modules
 
             Get["/about"] = parameters =>
             {
-                throw new Exception("Oops");
+               
                 base.Page.Title = "About";
 
                 return View["About", base.Model];

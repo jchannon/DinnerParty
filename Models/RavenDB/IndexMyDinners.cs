@@ -8,18 +8,11 @@ namespace DinnerParty.Models.RavenDB
 {
     public class IndexMyDinners : AbstractIndexCreationTask<Dinner>
     {
-        public class MyDinner
-        {
-            public string AttendeeName { get; set; }
-            public string AttendeeNameId { get; set; }
-            public string HostedById { get; set; }
-            public DateTime EventDate { get; set; }
-            public string HostedBy { get; set; }
-        }
+       
         public IndexMyDinners()
         {
             this.Map = dinners => from dinner in dinners
-                                  from rsvp in dinner.RSVPs//.DefaultIfEmpty()
+                                  from rsvp in dinner.RSVPs
                                   select new
                                   {
                                       RSVPs_AttendeeName = rsvp.AttendeeName,
@@ -28,12 +21,8 @@ namespace DinnerParty.Models.RavenDB
                                       EventDate = dinner.EventDate,
                                       HostedBy = dinner.HostedBy,
                                   };
-
         }
 
-        //          from doc in docs.Dinners
-        //          from docRSVPsItem in ((IEnumerable<dynamic>)doc.RSVPs).DefaultIfEmpty()
-        //          select new { RSVPs_AttendeeNameId = docRSVPsItem.AttendeeNameId, RSVPs_AttendeeName = docRSVPsItem.AttendeeName, 
-        //                       HostedById = doc.HostedById, EventDate = doc.EventDate, HostedBy = doc.HostedBy }
+
     }
 }

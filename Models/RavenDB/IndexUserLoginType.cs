@@ -6,15 +6,19 @@ using Raven.Client.Indexes;
 
 namespace DinnerParty.Models.RavenDB
 {
-    public class IndexUserLoginType : AbstractIndexCreationTask<UserModel>
+    public class IndexUserLogin : AbstractIndexCreationTask<UserModel>
     {
-        public IndexUserLoginType()
+        public IndexUserLogin()
         {
             this.Map = users =>
                                      from user in users
                                      select new
                                      {
-                                         LoginType = user.LoginType
+                                         LoginType = user.LoginType,
+                                         UserId = user.UserId,
+                                         Username = user.Username,
+                                         Password = user.Password,
+                                         EMailAddress = user.EMailAddress
                                      };
         }
     }

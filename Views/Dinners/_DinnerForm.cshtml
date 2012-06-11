@@ -23,10 +23,11 @@
                 <script type="text/javascript">
                     $(function () {
                         if (!Modernizr.inputtypes.date) {
-                            //            $("input[type='datetime']").datetime({
-                            //                userLang: 'en',
-                            //                americanMode: true
-                            //            });
+                            
+//                                        $("input[type='datetime']").datetime({
+//                                            userLang: 'en',
+//                                            americanMode: false
+//                                        });
                         }
                     });
 
@@ -126,7 +127,7 @@
         function onMapLoaded() {
             //NerdDinner.EnableMapMouseClickCallback();
 
-            $('#EventDate').datetimepicker();
+            $('#EventDate').datetimepicker({ dateFormat: "dd/mm/yy"  });
 
             $("#Address").blur(function (evt) {
                 //If it's time to look for an address, 

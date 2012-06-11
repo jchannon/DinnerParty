@@ -25,14 +25,14 @@ namespace DinnerParty
 
         public IUserIdentity GetUserFromIdentifier(Guid identifier)
         {
-            var userRecord = DocumentSession.Query<UserModel>().Where(x => x.UserId == identifier).FirstOrDefault();
+            var userRecord = DocumentSession.Query<UserModel, IndexUserLogin>().Where(x => x.UserId == identifier).FirstOrDefault();
 
             return userRecord == null ? null : new UserIdentity() { UserName = userRecord.Username, FriendlyName = userRecord.FriendlyName };
         }
 
         public Guid? ValidateUser(string username, string password)
         {
-            var userRecord = DocumentSession.Query<UserModel>().Where(x => x.Username == username && x.Password == EncodePassword(password)).FirstOrDefault();
+            var userRecord = DocumentSession.Query<UserModel, IndexUserLogin>().Where(x => x.Username == username && x.Password == EncodePassword(password)).FirstOrDefault();
 
             if (userRecord == null)
             {
@@ -54,7 +54,7 @@ namespace DinnerParty
                 Password = EncodePassword(newUser.Password)
             };
 
-            var existingUser = DocumentSession.Query<UserModel>().Where(x => x.EMailAddress == userRecord.EMailAddress && x.LoginType == "DinnerParty").FirstOrDefault();
+            var existingUser = DocumentSession.Query<UserModel, IndexUserLogin>().Where(x => x.EMailAddress == userRecord.EMailAddress && x.LoginType == "DinnerParty").FirstOrDefault();
             if (existingUser != null)
                 return null;
 
