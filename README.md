@@ -1,5 +1,5 @@
 # DinnerParty 
-## Introduction(s)
+## Introduction
 
 **Welcome to DinnerParty!**
 
