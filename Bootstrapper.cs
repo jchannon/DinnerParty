@@ -16,21 +16,21 @@ namespace DinnerParty
     {
         private byte[] favicon;
 
-        protected override byte[] DefaultFavIcon
-        {
-            get
-            {
-                if (favicon == null)
-                {
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        Resource1.favicon.Save(ms);
-                        favicon = ms.ToArray();
-                    }
-                }
-                return favicon;
-            }
-        }
+        //protected override byte[] DefaultFavIcon
+        //{
+        //    get
+        //    {
+        //        if (favicon == null)
+        //        {
+        //            using (MemoryStream ms = new MemoryStream())
+        //            {
+        //                Resource1.favicon.Save(ms);
+        //                favicon = ms.ToArray();
+        //            }
+        //        }
+        //        return favicon;
+        //    }
+        //}
 
         protected override void ApplicationStartup(TinyIoC.TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines)
         {
