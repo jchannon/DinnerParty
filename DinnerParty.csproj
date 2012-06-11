@@ -101,6 +101,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\images\ajax-loader.png" />
     <Content Include="Content\images\bkg.jpg" />
     <Content Include="Content\images\btn-go.png" />
     <Content Include="Content\images\btn-login.png" />
@@ -122,8 +123,14 @@
     <Content Include="Content\images\icon-icalfeed-16x16.png" />
     <Content Include="Content\images\icon-icalfeed-28x28.png" />
     <Content Include="Content\images\icon-odatafeed-28x28.png" />
+    <Content Include="Content\images\icon-search-black.png" />
     <Content Include="Content\images\icon-twitter.png" />
     <Content Include="Content\images\icon-yahoo.png" />
+    <Content Include="Content\images\icons-18-black.png" />
+    <Content Include="Content\images\icons-18-white.png" />
+    <Content Include="Content\images\icons-36-black.png" />
+    <Content Include="Content\images\icons-36-white.png" />
+    <Content Include="Content\images\infocard_23x16.png" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\menu-left-selected.png" />
     <Content Include="Content\images\menu-left.png" />
@@ -136,10 +143,16 @@
     <Content Include="Content\images\Mobile\logo_medium.png" />
     <Content Include="Content\images\Mobile\logo_medium_trans.png" />
     <Content Include="Content\images\Mobile\logo_small.png" />
+    <Content Include="Content\images\myopenid.png" />
     <Content Include="Content\images\nerd.jpg" />
+    <Content Include="Content\images\openid.gif" />
+    <Content Include="Content\images\openid_login.gif" />
+    <Content Include="Content\images\ribbon.gif" />
     <Content Include="Content\images\search-bubble.png" />
     <Content Include="Content\images\search-header.png" />
+    <Content Include="Content\images\verisign.gif" />
     <Content Include="Content\images\yahoo.gif" />
+    <Content Include="Content\images\yahoo_login.png" />
     <Content Include="Content\main.css" />
     <None Include="Resources\favicon.ico" />
     <Content Include="Content\Scripts\date.format.js" />
