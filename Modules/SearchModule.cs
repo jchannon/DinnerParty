@@ -10,7 +10,7 @@ using Raven.Client.Linq;
 
 namespace DinnerParty.Modules
 {
-    
+
 
     public class SearchModule : PersistModule
     {
@@ -19,7 +19,7 @@ namespace DinnerParty.Modules
         {
             Post["/GetMostPopularDinners"] = parameters =>
                 {
-                    
+
                     // Default the limit to 40, if not supplied.
                     if (!this.Request.Form.limit.HasValue || String.IsNullOrWhiteSpace(this.Request.Form.limit))
                         this.Request.Form.limit = 40;
@@ -28,9 +28,12 @@ namespace DinnerParty.Modules
                         .Where(x => x.EventDate >= DateTime.Now.Date)
                         .Take((int)this.Request.Form.limit)
                         .OrderByDescending(x => x.RSVPCount)
-                        .AsProjection<JsonDinner>();
+                        //.AsEnumerable()
+                        .AsProjection<JsonDinner>()
+                        //.Select(x=>JsonDinnerFromDinner(x))
+                        .ToList();
 
-                    return Response.AsJson(jsonDinners.ToList());
+                    return Response.AsJson(jsonDinners);
                 };
 
             Post["/SearchByLocation"] = parameters =>
@@ -38,7 +41,7 @@ namespace DinnerParty.Modules
 
                 double latitude = (double)this.Request.Form.latitude;
                 double longitude = (double)this.Request.Form.longitude;
-                
+
                 var dinners = DocumentSession.Query<Dinner, IndexEventDate>()
                                 .Where(x => x.EventDate > DateTime.Now.Date)
                                 .AsEnumerable()
