@@ -43,7 +43,7 @@ namespace DinnerParty
             Func<TinyIoCContainer, NamedParameterOverloads, IDocumentSession> factory = (ioccontainer, namedparams) => { return new RavenSessionProvider().GetSession(); };
             container.Register<IDocumentSession>(factory);
 
-            container.Register<IUserMapper, UserMapper>();
+           
 
            
 
@@ -81,7 +81,9 @@ namespace DinnerParty
 
         protected override void ConfigureRequestContainer(TinyIoC.TinyIoCContainer container, NancyContext context)
         {
-            base.ConfigureRequestContainer(container, context);         
+            base.ConfigureRequestContainer(container, context);
+
+            container.Register<IUserMapper, UserMapper>();
         }
 
         protected override Nancy.Bootstrapper.NancyInternalConfiguration InternalConfiguration
