@@ -74,10 +74,11 @@ namespace DinnerParty.Modules
                 if (!parameters.id.HasValue && String.IsNullOrWhiteSpace(parameters.id))
                 {
                     //ViewBag = "No Dinner found due to invalid dinner id";
-                    var view = View["404"];
-                    view.StatusCode = HttpStatusCode.NotFound;
-                    return view;
+                    //var view = View["404"];
+                    //view.StatusCode = HttpStatusCode.NotFound;
+                    //return view;
                     //return new FileNotFoundResult { Message = "No Dinner found due to invalid dinner id" };
+                    return 404;
                 }
 
                 Dinner dinner = DocumentSession.Load<Dinner>((int)parameters.id);
@@ -86,9 +87,10 @@ namespace DinnerParty.Modules
                 {
                     //return new FileNotFoundResult { Message = "No Dinner found for that id" };
                     //ViewBag = "No Dinner found due to invalid dinner id";
-                    var view = View["404"];
-                    view.StatusCode = HttpStatusCode.NotFound;
-                    return view;
+                    //var view = View["404"];
+                    //view.StatusCode = HttpStatusCode.NotFound;
+                    //return view;
+                    return 404;
                 }
 
                 base.Page.Title = dinner.Title;
