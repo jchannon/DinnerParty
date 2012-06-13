@@ -133,6 +133,7 @@
     <Content Include="Content\images\icons-36-white.png" />
     <Content Include="Content\images\infocard_23x16.png" />
     <Content Include="Content\images\logo.png" />
+    <Content Include="Content\images\dplogo.png" />
     <Content Include="Content\images\menu-left-selected.png" />
     <Content Include="Content\images\menu-left.png" />
     <Content Include="Content\images\menu-right-selected.png" />
