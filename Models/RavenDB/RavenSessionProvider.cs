@@ -14,20 +14,22 @@ namespace DinnerParty.Models.RavenDB
 
     public class RavenSessionProvider : IRavenSessionProvider
     {
-        private static IDocumentStore _documentStore;
+        private static DocumentStore _documentStore;
 
-        public static IDocumentStore DocumentStore
+        public static DocumentStore DocumentStore
         {
             get { return (_documentStore ?? (_documentStore = CreateDocumentStore())); }
         }
 
-        private static IDocumentStore CreateDocumentStore()
+        private static DocumentStore CreateDocumentStore()
         {
-            var store = new DocumentStore
+            DocumentStore store = new DocumentStore
             {
                 ConnectionStringName = "RavenDB"
-            }.Initialize();
-
+            };
+            
+            store.Initialize();
+          
             return store;
         }
 
