@@ -1,5 +1,4 @@
 ﻿using Nancy;
-using System.IO;
 using Nancy.Authentication.Forms;
 using Nancy.Validation.DataAnnotations;
 using DinnerParty.Models.CustomAnnotations;
@@ -9,12 +8,8 @@ using Nancy.Diagnostics;
 using System;
 using Raven.Client;
 using TinyIoC;
-using Quartz;
-using Quartz.Impl;
 using DinnerParty.Models;
-using System.Linq;
 using Raven.Abstractions.Data;
-using System.Net;
 
 namespace DinnerParty
 {
@@ -113,8 +108,6 @@ namespace DinnerParty
             get { return new DiagnosticsConfiguration { Password = @"nancy" }; }
 
         }
-
-        public static IScheduler Scheduler { get; private set; }
 
         private void CleanUpDB(IDocumentSession DocSession)
         {
