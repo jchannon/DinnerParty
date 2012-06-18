@@ -35,12 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="C5">
-      <HintPath>packages\Quartz.2.0.1\lib\net40\C5.dll</HintPath>
-    </Reference>
-    <Reference Include="Common.Logging">
-      <HintPath>packages\Common.Logging.2.0.0\lib\2.0\Common.Logging.dll</HintPath>
-    </Reference>
     <Reference Include="Elmah">
       <HintPath>packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
@@ -74,9 +68,6 @@
     </Reference>
     <Reference Include="PagedList">
       <HintPath>packages\PagedList.1.14\lib\net40\PagedList.dll</HintPath>
-    </Reference>
-    <Reference Include="Quartz">
-      <HintPath>packages\Quartz.2.0.1\lib\net40\Quartz.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <HintPath>packages\RavenDB.Client.1.0.888\lib\net40\Raven.Abstractions.dll</HintPath>
