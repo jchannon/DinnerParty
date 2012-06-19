@@ -419,3 +419,7 @@ strong {
 #nancyraven {width:250px;margin:0 auto;}
 
 #newlogo{display:block; position: absolute; width: 244px; height: 43px; top: 12px; left: 310px;}
+
+.red{color:#FF0000;}
+
+.stronglink{color:#FF0000; font-weight:700; text-decoration:underline;}
