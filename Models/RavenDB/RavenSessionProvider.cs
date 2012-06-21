@@ -25,7 +25,7 @@ namespace DinnerParty.Models.RavenDB
         {
             DocumentStore store = new DocumentStore
             {
-                ConnectionStringName = "RavenDB"
+                ConnectionStringName = "RavenDB1"
             };
             
             store.Initialize();
