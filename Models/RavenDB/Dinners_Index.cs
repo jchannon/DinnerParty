@@ -25,7 +25,14 @@ namespace DinnerParty.Models.RavenDB
                            Description = dinner.Description,
                            EventDate = dinner.EventDate,
                            RSVPCount = dinner.RSVPs.Count,
+                           Url = dinner.Id.Substring(dinner.Id.LastIndexOf("/") + 1)
                        };
+
+            this.Store("Url", Raven.Abstractions.Indexing.FieldStorage.Yes);
+            this.Store("RSVPCount", Raven.Abstractions.Indexing.FieldStorage.Yes);
+            this.Store("DinnerID", Raven.Abstractions.Indexing.FieldStorage.Yes);
+
+            this.Index("RSVPCount", Raven.Abstractions.Indexing.FieldIndexing.NotAnalyzed);
         }
     }
 }
