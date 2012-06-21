@@ -24,13 +24,11 @@ namespace DinnerParty.Modules
                     if (!this.Request.Form.limit.HasValue || String.IsNullOrWhiteSpace(this.Request.Form.limit))
                         this.Request.Form.limit = 40;
 
-                    var jsonDinners = DocumentSession.Query<JsonDinner, IndexMostPopularDinners>()
+                    var jsonDinners = DocumentSession.Query<JsonDinner, Dinners_Index>()
                         .Where(x => x.EventDate >= DateTime.Now.Date)
                         .Take((int)this.Request.Form.limit)
                         .OrderByDescending(x => x.RSVPCount)
-                        //.AsEnumerable()
                         .AsProjection<JsonDinner>()
-                        //.Select(x=>JsonDinnerFromDinner(x))
                         .ToList();
 
                     return Response.AsJson(jsonDinners);
@@ -42,7 +40,7 @@ namespace DinnerParty.Modules
                 double latitude = (double)this.Request.Form.latitude;
                 double longitude = (double)this.Request.Form.longitude;
 
-                var dinners = DocumentSession.Query<Dinner, IndexEventDate>()
+                var dinners = DocumentSession.Query<Dinner, Dinners_Index>()
                                 .Where(x => x.EventDate > DateTime.Now.Date)
                                 .AsEnumerable()
                                 .Where(x => DistanceBetween(x.Latitude, x.Longitude, latitude, longitude) < 1000).Select(x => JsonDinnerFromDinner(x));

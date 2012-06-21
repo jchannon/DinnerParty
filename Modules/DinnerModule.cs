@@ -29,22 +29,6 @@ namespace DinnerParty.Modules
                 base.Page.Title = "Upcoming Nerd Dinners";
                 IQueryable<Dinner> dinners = null;
 
-                //var dinner = new Dinner()
-                //{
-                //    Title = "test store",
-                //    Address = "BT Tower, London",
-                //    ContactPhone = "02098903333",
-                //    Country = "UK",
-                //    Description = "High Life",
-                //    DinnerID = 4,
-                //    EventDate = DateTime.Now.AddMonths(2),
-                //    HostedBy = "Stephn Fry",
-                //    RSVPs = new List<RSVP>()
-                //};
-
-                //DocumentSession.Store(dinner);
-                //DocumentSession.SaveChanges();
-
                 //Searching?
                 if (this.Request.Query.q.HasValue)
                 {
@@ -56,12 +40,10 @@ namespace DinnerParty.Modules
                 }
                 else
                 {
-                    dinners = DocumentSession.Query<Dinner, IndexEventDate>().Where(d => d.EventDate > DateTime.Now.Date).OrderBy(x => x.EventDate);
+                    dinners = DocumentSession.Query<Dinner, Dinners_Index>().Where(d => d.EventDate > DateTime.Now.Date).OrderBy(x => x.EventDate);
                 }
 
                 int pageIndex = parameters.page.HasValue && !String.IsNullOrWhiteSpace(parameters.page) ? parameters.page : 1;
-
-
 
                 base.Model.Dinners = dinners.ToPagedList(pageIndex, PageSize);
 
@@ -73,11 +55,6 @@ namespace DinnerParty.Modules
             {
                 if (!parameters.id.HasValue && String.IsNullOrWhiteSpace(parameters.id))
                 {
-                    //ViewBag = "No Dinner found due to invalid dinner id";
-                    //var view = View["404"];
-                    //view.StatusCode = HttpStatusCode.NotFound;
-                    //return view;
-                    //return new FileNotFoundResult { Message = "No Dinner found due to invalid dinner id" };
                     return 404;
                 }
 
@@ -85,11 +62,6 @@ namespace DinnerParty.Modules
 
                 if (dinner == null)
                 {
-                    //return new FileNotFoundResult { Message = "No Dinner found for that id" };
-                    //ViewBag = "No Dinner found due to invalid dinner id";
-                    //var view = View["404"];
-                    //view.StatusCode = HttpStatusCode.NotFound;
-                    //return view;
                     return 404;
                 }
 
@@ -270,7 +242,7 @@ namespace DinnerParty.Modules
                 {
                     string nerdName = this.Context.CurrentUser.UserName;
 
-                    var userDinners = DocumentSession.Query<Dinner, IndexMyDinners>()
+                    var userDinners = DocumentSession.Query<Dinner, Dinners_Index>()
                                     .Where(x => x.HostedById == nerdName || x.HostedBy == nerdName || x.RSVPs.Any(r => r.AttendeeNameId == nerdName || (r.AttendeeNameId == null && r.AttendeeName == nerdName)))
                                     .OrderBy(x => x.EventDate)
                                     .AsEnumerable();

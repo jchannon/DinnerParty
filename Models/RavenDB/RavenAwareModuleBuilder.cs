@@ -43,13 +43,6 @@ namespace DinnerParty.Models.RavenDB
             if (module is DinnerParty.Modules.PersistModule)
             {
                 context.Items.Add("RavenSession", _ravenSessionProvider.GetSession());
-                //module.After.AddItemToStartOfPipeline(ctx =>
-                //{
-                //    var session =
-                //        ctx.Items["RavenSession"] as IDocumentSession;
-                //    session.SaveChanges();
-                //    session.Dispose();
-                //});
             }
 
             return module;

@@ -162,7 +162,6 @@ namespace DinnerParty.Modules
                 if (j.profile.email != null)
                     email = j.profile.email.ToString();
 
-                // var user = _user.GetUserFromUserIdentity(userIdentity);
                 var user = DocumentSession.Query<UserModel, IndexUserLogin>().Where(x => x.LoginType == userIdentity).FirstOrDefault();
                               
                 if (user == null)

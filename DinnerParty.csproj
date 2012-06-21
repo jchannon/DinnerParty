@@ -245,7 +245,6 @@
     <Compile Include="BindExtensions.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Helpers\CountryList.cs" />
-    <Compile Include="Helpers\FileNotFoundResult.cs" />
     <Compile Include="Helpers\RSSResult.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -260,12 +259,10 @@
     <Compile Include="Models\JsonDinner.cs" />
     <Compile Include="Models\PageModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\RavenDB\IndexEventDate.cs" />
-    <Compile Include="Models\RavenDB\IndexMyDinners.cs" />
+    <Compile Include="Models\RavenDB\Dinners_Index.cs" />
     <Compile Include="Models\RavenDB\IndexUserLoginType.cs" />
     <Compile Include="Models\RavenDB\RavenAwareModuleBuilder.cs" />
     <Compile Include="Models\RavenDB\RavenSessionProvider.cs" />
-    <Compile Include="Models\RavenDB\IndexMostPopularDinners.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\RSVP.cs" />
     <Compile Include="Models\UserModel.cs" />

@@ -45,8 +45,8 @@ namespace DinnerParty.Modules
                 var item = new SyndicationItem(
                     title: d.Title,
                     content: contentString,
-                    itemAlternateLink: new Uri("http://nrddnr.com/" + d.DinnerID),
-                    id: "http://nrddnr.com/" + d.DinnerID,
+                    itemAlternateLink: new Uri("http://dinnerparty.azurewebsites.net/" + d.DinnerID),
+                    id: "http://dinnerparty.azurewebsites.net/" + d.DinnerID,
                     lastUpdatedTime: d.EventDate.ToUniversalTime()
                     );
                 item.PublishDate = d.EventDate.ToUniversalTime();

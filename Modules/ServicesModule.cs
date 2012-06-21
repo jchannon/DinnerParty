@@ -15,7 +15,7 @@ namespace DinnerParty.Modules
         {
             Get["/RSS"] = parameters =>
                 {
-                    var dinners = DocumentSession.Query<Dinner, IndexEventDate>().Where(d => d.EventDate > DateTime.Now.Date).OrderBy(x => x.EventDate).AsEnumerable();
+                    var dinners = DocumentSession.Query<Dinner, Dinners_Index>().Where(d => d.EventDate > DateTime.Now.Date).OrderBy(x => x.EventDate).AsEnumerable();
 
                     if (dinners == null)
                     {

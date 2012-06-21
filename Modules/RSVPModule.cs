@@ -68,7 +68,6 @@ namespace DinnerParty.Modules
 
                     dinner.RSVPs.Add(rsvp);
 
-                    //DocumentSession.Store(rsvp);
                     DocumentSession.SaveChanges(); 
                 }
 

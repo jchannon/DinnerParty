@@ -10,7 +10,6 @@ namespace DinnerParty.HtmlExtensions
     {
         public static Nancy.ViewEngines.Razor.IHtmlString CheckBox<T>(this IHtmlHelpers<T> helper, string Name, dynamic ModelProperty)
         {
-            //string hidden = "<input type=\"hidden\" name=\"" + Name + "\" value=\"false\" />";
             string input = String.Empty;
             bool checkedState = false;
 

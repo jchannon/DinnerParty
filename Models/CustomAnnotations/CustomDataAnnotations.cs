@@ -20,12 +20,10 @@ namespace DinnerParty.Models.CustomAnnotations
             MatchProperty = match;
         }
 
-        //public string FormatErorrMessage { get { return this.ErrorMessage; } }
         public override string FormatErrorMessage(string name)
         {
             return this.ErrorMessage;
         }
-
 
         public override Boolean IsValid(Object value)
         {
@@ -70,7 +68,6 @@ namespace DinnerParty.Models.CustomAnnotations
 
             if (sourceType != null && matchType != null)
             {
-                //if (Convert.ChangeType(sourceValue, sourceType) == Convert.ChangeType(matchValue, matchType))
                 return String.Equals(sourceValue.ToString(), matchValue.ToString());
             }
             return false;

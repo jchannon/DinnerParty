@@ -17,22 +17,6 @@ namespace DinnerParty
     {
         private byte[] favicon;
 
-        //protected override byte[] DefaultFavIcon
-        //{
-        //    get
-        //    {
-        //        if (favicon == null)
-        //        {
-        //            using (MemoryStream ms = new MemoryStream())
-        //            {
-        //                Resource1.favicon.Save(ms);
-        //                favicon = ms.ToArray();
-        //            }
-        //        }
-        //        return favicon;
-        //    }
-        //}
-
         protected override void ApplicationStartup(TinyIoC.TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines)
         {
             base.ApplicationStartup(container, pipelines);
@@ -42,15 +26,10 @@ namespace DinnerParty
             Func<TinyIoCContainer, NamedParameterOverloads, IDocumentSession> factory = (ioccontainer, namedparams) => { return new RavenSessionProvider().GetSession(); };
             container.Register<IDocumentSession>(factory);
 
-
-
             CleanUpDB(container.Resolve<IDocumentSession>());
 
-            Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(IndexEventDate).Assembly, RavenSessionProvider.DocumentStore);
-            Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(IndexUserLogin).Assembly, RavenSessionProvider.DocumentStore);
-            Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(IndexMostPopularDinners).Assembly, RavenSessionProvider.DocumentStore);
-            Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(IndexMyDinners).Assembly, RavenSessionProvider.DocumentStore);
-
+            Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(Dinners_Index).Assembly, RavenSessionProvider.DocumentStore);
+           
             pipelines.OnError += (context, exception) =>
             {
                 Elmah.ErrorSignal.FromCurrentContext().Raise(exception);
@@ -90,29 +69,18 @@ namespace DinnerParty
             get
             {
                 var config = NancyInternalConfiguration.WithOverrides(x => x.NancyModuleBuilder = typeof(RavenAwareModuleBuilder));
-
-                //config = config.ErrorHandlers = new List<Type>
-                //                              {
-                //                                  typeof (ErrorHandlers.Generic404ErrorHandler),
-                //                                  typeof (Api.ErrorHandlers.Api404ErrorHandler),
-                //                                  typeof (Nancy.ErrorHandling.DefaultErrorHandler),
-                //                              };
-
                 return config;
             }
         }
 
         protected override Nancy.Diagnostics.DiagnosticsConfiguration DiagnosticsConfiguration
         {
-
             get { return new DiagnosticsConfiguration { Password = @"nancy" }; }
-
         }
 
         private void CleanUpDB(IDocumentSession DocSession)
         {
             var configInfo = DocSession.Load<Config>("DinnerParty/Config");
-
 
             if (configInfo == null)
             {
@@ -160,9 +128,6 @@ namespace DinnerParty
                                               false);
                 }
             }
-
         }
     }
-
-
 }

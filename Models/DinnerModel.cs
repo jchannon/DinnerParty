@@ -66,13 +66,10 @@ namespace DinnerParty.Models
         [UIHint("CountryDropDown")]
         public string Country { get; set; }
 
-        //[HiddenInput(DisplayValue = false)]
         public double Latitude { get; set; }
 
-        //[HiddenInput(DisplayValue = false)]
         public double Longitude { get; set; }
 
-        //[HiddenInput(DisplayValue = false)]
         public string HostedById { get; set; }
 
         public virtual ICollection<RSVP> RSVPs { get; set; }
