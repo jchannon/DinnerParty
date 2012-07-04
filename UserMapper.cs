@@ -1,15 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using Nancy.Authentication.Forms;
-using Nancy.Security;
-using DinnerParty.Models;
-using Raven.Client;
-using DinnerParty.Models.RavenDB;
 using System.Security.Cryptography;
 using System.Text;
-using Raven.Client.Document;
+using DinnerParty.Models;
+using DinnerParty.Models.RavenDB;
+using Nancy;
+using Nancy.Authentication.Forms;
+using Nancy.Security;
+using Raven.Client;
 
 namespace DinnerParty
 {
@@ -23,7 +21,7 @@ namespace DinnerParty
 
         }
 
-        public IUserIdentity GetUserFromIdentifier(Guid identifier)
+        public IUserIdentity GetUserFromIdentifier(Guid identifier, NancyContext context)
         {
             var userRecord = DocumentSession.Query<UserModel, IndexUserLogin>().Where(x => x.UserId == identifier).FirstOrDefault();
 
@@ -82,7 +80,6 @@ namespace DinnerParty
             //Convert encoded bytes back to a 'readable' string
             return BitConverter.ToString(encodedBytes);
         }
-
 
     }
 }

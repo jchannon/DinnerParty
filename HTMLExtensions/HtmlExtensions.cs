@@ -8,7 +8,7 @@ namespace DinnerParty.HtmlExtensions
 {
     public static class HtmlExtensions
     {
-        public static Nancy.ViewEngines.Razor.IHtmlString CheckBox<T>(this IHtmlHelpers<T> helper, string Name, dynamic ModelProperty)
+        public static Nancy.ViewEngines.Razor.IHtmlString CheckBox<T>(this HtmlHelpers<T> helper, string Name, dynamic ModelProperty)
         {
             string input = String.Empty;
             bool checkedState = false;
@@ -29,7 +29,7 @@ namespace DinnerParty.HtmlExtensions
             return new Nancy.ViewEngines.Razor.NonEncodedHtmlString(input);
         }
 
-        public static Nancy.ViewEngines.Razor.IHtmlString ValidationSummary<T>(this IHtmlHelpers<T> helper, List<DinnerParty.Models.ErrorModel> Errors)
+        public static Nancy.ViewEngines.Razor.IHtmlString ValidationSummary<T>(this HtmlHelpers<T> helper, List<DinnerParty.Models.ErrorModel> Errors)
         {
 
             if (!Errors.Any())
@@ -49,7 +49,7 @@ namespace DinnerParty.HtmlExtensions
             return new NonEncodedHtmlString(div);
         }
 
-        public static Nancy.ViewEngines.Razor.IHtmlString ValidationMessageFor<T>(this IHtmlHelpers<T> helper, List<DinnerParty.Models.ErrorModel> Errors, string PropertyName)
+        public static Nancy.ViewEngines.Razor.IHtmlString ValidationMessageFor<T>(this HtmlHelpers<T> helper, List<DinnerParty.Models.ErrorModel> Errors, string PropertyName)
         {
             if (!Errors.Any())
                 return new NonEncodedHtmlString("");
