@@ -47,6 +47,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AjaxMin">
+      <HintPath>packages\AjaxMin.4.51.4507.18296\lib\net20\AjaxMin.dll</HintPath>
+    </Reference>
+    <Reference Include="Cassette">
+      <HintPath>packages\Cassette.2.0.0-beta5\lib\net40-client\Cassette.dll</HintPath>
+    </Reference>
+    <Reference Include="Cassette.Nancy">
+      <HintPath>packages\Cassette.Nancy.2.0.0-beta1\lib\net40\Cassette.Nancy.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah">
       <HintPath>packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
@@ -261,6 +270,7 @@
   <ItemGroup>
     <Compile Include="BindExtensions.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="CassetteConfiguration.cs" />
     <Compile Include="Helpers\CountryList.cs" />
     <Compile Include="Helpers\RSSResult.cs">
       <SubType>Code</SubType>
