@@ -21,6 +21,10 @@ namespace DinnerParty
         {
             base.ApplicationStartup(container, pipelines);
 
+#if !DEBUG
+            Cassette.Nancy.CassetteNancyStartup.OptimizeOutput = true;
+#endif
+
             DataAnnotationsValidator.RegisterAdapter(typeof(MatchAttribute), (v, d) => new CustomDataAdapter((MatchAttribute)v));
 
             Func<TinyIoCContainer, NamedParameterOverloads, IDocumentSession> factory = (ioccontainer, namedparams) => { return new RavenSessionProvider().GetSession(); };
