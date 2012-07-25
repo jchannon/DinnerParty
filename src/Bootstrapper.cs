@@ -15,8 +15,6 @@ namespace DinnerParty
 {
     public class Bootstrapper : DefaultNancyBootstrapper
     {
-        private byte[] favicon;
-
         protected override void ApplicationStartup(TinyIoC.TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines)
         {
             base.ApplicationStartup(container, pipelines);

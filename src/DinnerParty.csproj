@@ -181,7 +181,7 @@
     <Content Include="assets\stylesheets\images\yahoo.gif" />
     <Content Include="assets\stylesheets\images\yahoo_login.png" />
     <Content Include="assets\stylesheets\main.css" />
-    <None Include="Resources\favicon.ico" />
+    <None Include="public\favicon.ico" />
     <Content Include="Content\Scripts\date.format.js" />
     <Content Include="Content\Scripts\geo-polyfill.js" />
     <Content Include="Content\Scripts\geo.js" />
