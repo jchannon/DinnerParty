@@ -68,6 +68,12 @@ namespace DinnerParty
             container.Register<IUserMapper, UserMapper>();
         }
 
+        protected override void ConfigureConventions(Nancy.Conventions.NancyConventions nancyConventions)
+        {
+            base.ConfigureConventions(nancyConventions);
+            nancyConventions.StaticContentsConventions.Add(Nancy.Conventions.StaticContentConventionBuilder.AddDirectory("/", "public"));
+        }
+
         protected override Nancy.Bootstrapper.NancyInternalConfiguration InternalConfiguration
         {
             get
