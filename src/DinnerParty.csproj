@@ -291,7 +291,6 @@
     <Compile Include="Modules\RSVPModule.cs" />
     <Compile Include="Modules\SearchModule.cs" />
     <Compile Include="Modules\ServicesModule.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserIdentity.cs" />
     <Compile Include="UserMapper.cs" />
   </ItemGroup>
@@ -312,6 +311,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Properties\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
