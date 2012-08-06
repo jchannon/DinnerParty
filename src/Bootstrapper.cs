@@ -15,11 +15,13 @@ namespace DinnerParty
 {
     public class Bootstrapper : DefaultNancyBootstrapper
     {
-        private byte[] favicon;
-
         protected override void ApplicationStartup(TinyIoC.TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines)
         {
             base.ApplicationStartup(container, pipelines);
+
+#if !DEBUG
+            Cassette.Nancy.CassetteNancyStartup.OptimizeOutput = true;
+#endif
 
             DataAnnotationsValidator.RegisterAdapter(typeof(MatchAttribute), (v, d) => new CustomDataAdapter((MatchAttribute)v));
 
@@ -62,6 +64,12 @@ namespace DinnerParty
             base.ConfigureRequestContainer(container, context);
 
             container.Register<IUserMapper, UserMapper>();
+        }
+
+        protected override void ConfigureConventions(Nancy.Conventions.NancyConventions nancyConventions)
+        {
+            base.ConfigureConventions(nancyConventions);
+            nancyConventions.StaticContentsConventions.Add(Nancy.Conventions.StaticContentConventionBuilder.AddDirectory("/", "public"));
         }
 
         protected override Nancy.Bootstrapper.NancyInternalConfiguration InternalConfiguration
