@@ -47,6 +47,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AjaxMin, Version=4.59.4576.13504, Culture=neutral, PublicKeyToken=21ef50ce11b5d80f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\AjaxMin.4.59.4576.13504\lib\net20\AjaxMin.dll</HintPath>
+    </Reference>
+    <Reference Include="Cassette">
+      <HintPath>packages\Cassette.2.0.0-beta5\lib\net40-client\Cassette.dll</HintPath>
+    </Reference>
+    <Reference Include="Cassette.Nancy">
+      <HintPath>packages\Cassette.Nancy.2.0.0-beta1\lib\net40\Cassette.Nancy.dll</HintPath>
+    </Reference>
     <Reference Include="Elmah">
       <HintPath>packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
     </Reference>
@@ -116,62 +126,62 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\images\ajax-loader.png" />
-    <Content Include="Content\images\bkg.jpg" />
-    <Content Include="Content\images\btn-go.png" />
-    <Content Include="Content\images\btn-login.png" />
-    <Content Include="Content\images\button-google.png" />
-    <Content Include="Content\images\button-twitter.png" />
-    <Content Include="Content\images\button-yahoo.png" />
-    <Content Include="Content\images\content-bottom.png" />
-    <Content Include="Content\images\content-top.png" />
-    <Content Include="Content\images\dinnerparty.png" />
-    <Content Include="Content\images\exclamation.png" />
-    <Content Include="Content\images\google.gif" />
-    <Content Include="Content\images\header-bkg.jpg" />
-    <Content Include="Content\images\hm-content-bkg.png" />
-    <Content Include="Content\images\hm-content-bottom.png" />
-    <Content Include="Content\images\hm-content-top.png" />
-    <Content Include="Content\images\hm-masthead.png" />
-    <Content Include="Content\images\icon-facebook.png" />
-    <Content Include="Content\images\icon-feed-28x28.png" />
-    <Content Include="Content\images\icon-google.png" />
-    <Content Include="Content\images\icon-icalfeed-16x16.png" />
-    <Content Include="Content\images\icon-icalfeed-28x28.png" />
-    <Content Include="Content\images\icon-odatafeed-28x28.png" />
-    <Content Include="Content\images\icon-search-black.png" />
-    <Content Include="Content\images\icon-twitter.png" />
-    <Content Include="Content\images\icon-yahoo.png" />
-    <Content Include="Content\images\icons-18-black.png" />
-    <Content Include="Content\images\icons-18-white.png" />
-    <Content Include="Content\images\icons-36-black.png" />
-    <Content Include="Content\images\icons-36-white.png" />
-    <Content Include="Content\images\infocard_23x16.png" />
-    <Content Include="Content\images\logo.png" />
-    <Content Include="Content\images\dplogo.png" />
-    <Content Include="Content\images\menu-left-selected.png" />
-    <Content Include="Content\images\menu-left.png" />
-    <Content Include="Content\images\menu-right-selected.png" />
-    <Content Include="Content\images\menu-right.png" />
-    <Content Include="Content\images\microformat_hcalendar.png" />
-    <Content Include="Content\images\Mobile\btn-search.jpg" />
-    <Content Include="Content\images\Mobile\logo.png" />
-    <Content Include="Content\images\Mobile\logo_medium.jpg" />
-    <Content Include="Content\images\Mobile\logo_medium.png" />
-    <Content Include="Content\images\Mobile\logo_medium_trans.png" />
-    <Content Include="Content\images\Mobile\logo_small.png" />
-    <Content Include="Content\images\myopenid.png" />
-    <Content Include="Content\images\nerd.jpg" />
-    <Content Include="Content\images\openid.gif" />
-    <Content Include="Content\images\openid_login.gif" />
-    <Content Include="Content\images\ribbon.gif" />
-    <Content Include="Content\images\search-bubble.png" />
-    <Content Include="Content\images\search-header.png" />
-    <Content Include="Content\images\verisign.gif" />
-    <Content Include="Content\images\yahoo.gif" />
-    <Content Include="Content\images\yahoo_login.png" />
-    <Content Include="Content\main.css" />
-    <None Include="Resources\favicon.ico" />
+    <Content Include="assets\stylesheets\images\ajax-loader.png" />
+    <Content Include="assets\stylesheets\images\bkg.jpg" />
+    <Content Include="assets\stylesheets\images\btn-go.png" />
+    <Content Include="assets\stylesheets\images\btn-login.png" />
+    <Content Include="assets\stylesheets\images\button-google.png" />
+    <Content Include="assets\stylesheets\images\button-twitter.png" />
+    <Content Include="assets\stylesheets\images\button-yahoo.png" />
+    <Content Include="assets\stylesheets\images\content-bottom.png" />
+    <Content Include="assets\stylesheets\images\content-top.png" />
+    <Content Include="public\images\dinnerparty.png" />
+    <Content Include="assets\stylesheets\images\exclamation.png" />
+    <Content Include="assets\stylesheets\images\google.gif" />
+    <Content Include="assets\stylesheets\images\header-bkg.jpg" />
+    <Content Include="assets\stylesheets\images\hm-content-bkg.png" />
+    <Content Include="assets\stylesheets\images\hm-content-bottom.png" />
+    <Content Include="assets\stylesheets\images\hm-content-top.png" />
+    <Content Include="assets\stylesheets\images\hm-masthead.png" />
+    <Content Include="assets\stylesheets\images\icon-facebook.png" />
+    <Content Include="public\images\icon-feed-28x28.png" />
+    <Content Include="assets\stylesheets\images\icon-google.png" />
+    <Content Include="assets\stylesheets\images\icon-icalfeed-16x16.png" />
+    <Content Include="public\images\icon-icalfeed-28x28.png" />
+    <Content Include="public\images\icon-odatafeed-28x28.png" />
+    <Content Include="assets\stylesheets\images\icon-search-black.png" />
+    <Content Include="assets\stylesheets\images\icon-twitter.png" />
+    <Content Include="assets\stylesheets\images\icon-yahoo.png" />
+    <Content Include="assets\stylesheets\images\icons-18-black.png" />
+    <Content Include="assets\stylesheets\images\icons-18-white.png" />
+    <Content Include="assets\stylesheets\images\icons-36-black.png" />
+    <Content Include="assets\stylesheets\images\icons-36-white.png" />
+    <Content Include="assets\stylesheets\images\infocard_23x16.png" />
+    <Content Include="assets\stylesheets\images\logo.png" />
+    <Content Include="public\images\dplogo.png" />
+    <Content Include="assets\stylesheets\images\menu-left-selected.png" />
+    <Content Include="assets\stylesheets\images\menu-left.png" />
+    <Content Include="assets\stylesheets\images\menu-right-selected.png" />
+    <Content Include="assets\stylesheets\images\menu-right.png" />
+    <Content Include="assets\stylesheets\images\microformat_hcalendar.png" />
+    <Content Include="assets\stylesheets\images\Mobile\btn-search.jpg" />
+    <Content Include="assets\stylesheets\images\Mobile\logo.png" />
+    <Content Include="assets\stylesheets\images\Mobile\logo_medium.jpg" />
+    <Content Include="assets\stylesheets\images\Mobile\logo_medium.png" />
+    <Content Include="assets\stylesheets\images\Mobile\logo_medium_trans.png" />
+    <Content Include="assets\stylesheets\images\Mobile\logo_small.png" />
+    <Content Include="assets\stylesheets\images\myopenid.png" />
+    <Content Include="public\images\nerd.jpg" />
+    <Content Include="assets\stylesheets\images\openid.gif" />
+    <Content Include="assets\stylesheets\images\openid_login.gif" />
+    <Content Include="public\images\ribbon.gif" />
+    <Content Include="assets\stylesheets\images\search-bubble.png" />
+    <Content Include="assets\stylesheets\images\search-header.png" />
+    <Content Include="assets\stylesheets\images\verisign.gif" />
+    <Content Include="assets\stylesheets\images\yahoo.gif" />
+    <Content Include="assets\stylesheets\images\yahoo_login.png" />
+    <Content Include="assets\stylesheets\main.css" />
+    <None Include="public\favicon.ico" />
     <Content Include="Content\Scripts\date.format.js" />
     <Content Include="Content\Scripts\geo-polyfill.js" />
     <Content Include="Content\Scripts\geo.js" />
@@ -261,6 +271,7 @@
   <ItemGroup>
     <Compile Include="BindExtensions.cs" />
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="CassetteConfiguration.cs" />
     <Compile Include="Helpers\CountryList.cs" />
     <Compile Include="Helpers\RSSResult.cs">
       <SubType>Code</SubType>
