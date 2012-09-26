@@ -1,23 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Nancy.Routing;
-using Nancy;
-using Nancy.ModelBinding;
-using Raven.Client;
-using Nancy.ViewEngines;
-using Nancy.Validation;
-
-namespace DinnerParty.Models.RavenDB
+﻿namespace DinnerParty.Models.RavenDB
 {
+    using Nancy.Extensions;
+    using Nancy.Responses.Negotiation;
+    using Nancy.Routing;
+    using Nancy;
+    using Nancy.ModelBinding;
+    using Nancy.ViewEngines;
+    using Nancy.Validation;
 
     public class RavenAwareModuleBuilder : INancyModuleBuilder
     {
         private readonly IViewFactory viewFactory;
         private readonly IResponseFormatterFactory responseFormatterFactory;
         private readonly IModelBinderLocator modelBinderLocator;
-        private readonly IRavenSessionProvider _ravenSessionProvider;
+        private readonly IRavenSessionProvider ravenSessionProvider;
         private readonly IModelValidatorLocator validatorLocator;
 
         public RavenAwareModuleBuilder(IViewFactory viewFactory, IResponseFormatterFactory responseFormatterFactory,
@@ -29,23 +25,34 @@ namespace DinnerParty.Models.RavenDB
             this.responseFormatterFactory = responseFormatterFactory;
             this.modelBinderLocator = modelBinderLocator;
             this.validatorLocator = validatorLocator;
-            _ravenSessionProvider = ravenSessionProvider;
+            this.ravenSessionProvider = ravenSessionProvider;
         }
 
         public NancyModule BuildModule(NancyModule module, NancyContext context)
         {
+            CreateNegotiationContext(module, context);
+
             module.Context = context;
             module.Response = this.responseFormatterFactory.Create(context);
             module.ViewFactory = this.viewFactory;
             module.ModelBinderLocator = this.modelBinderLocator;
             module.ValidatorLocator = this.validatorLocator;
 
-            if (module is DinnerParty.Modules.PersistModule)
+            if (module is Modules.PersistModule)
             {
-                context.Items.Add("RavenSession", _ravenSessionProvider.GetSession());
+                context.Items.Add("RavenSession", this.ravenSessionProvider.GetSession());
             }
 
             return module;
+        }
+
+        private static void CreateNegotiationContext(NancyModule module, NancyContext context)
+        {
+            context.NegotiationContext = new NegotiationContext
+            {
+                ModuleName = module.GetModuleName(),
+                ModulePath = module.ModulePath,
+            };
         }
     }
 
