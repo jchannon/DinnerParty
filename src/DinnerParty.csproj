@@ -79,9 +79,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Nancy.RouteHelpers.1.0.8\lib\Nancy.RouteHelpers.dll</HintPath>
     </Reference>
-    <Reference Include="Nancy.Validation.DataAnnotations, Version=0.11.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Nancy.Validation.DataAnnotations, Version=0.13.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\Nancy.Validation.DataAnnotations.0.11.0\lib\net40\Nancy.Validation.DataAnnotations.dll</HintPath>
+      <HintPath>packages\Nancy.Validation.DataAnnotations.0.13.0\lib\net40\Nancy.Validation.DataAnnotations.dll</HintPath>
     </Reference>
     <Reference Include="Nancy.ViewEngines.Razor, Version=0.13.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
