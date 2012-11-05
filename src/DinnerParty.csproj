@@ -97,10 +97,12 @@
       <HintPath>packages\PagedList.1.14\lib\net40\PagedList.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>packages\RavenDB.Client.1.0.888\lib\net40\Raven.Abstractions.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\RavenDB.Client.1.0.980\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Lightweight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>packages\RavenDB.Client.1.0.888\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\RavenDB.Client.1.0.980\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

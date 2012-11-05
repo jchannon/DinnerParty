@@ -7,6 +7,7 @@ using DinnerParty.Models.RavenDB;
 using Nancy.Diagnostics;
 using System;
 using Raven.Client;
+using Raven.Client.Connection;
 using TinyIoC;
 using DinnerParty.Models;
 using Raven.Abstractions.Data;
@@ -111,13 +112,13 @@ namespace DinnerParty
                 DocSession.SaveChanges();
 
                 //If database size >15mb or 1000 documents delete documents older than a week
-
 #if DEBUG
-                var jsonData = RavenSessionProvider.DocumentStore.JsonRequestFactory.CreateHttpJsonRequest(null, "http://localhost:8080/database/size", "GET", RavenSessionProvider.DocumentStore.Credentials, RavenSessionProvider.DocumentStore.Conventions).ReadResponseJson();
+                var jsonRequestParams = new CreateHttpJsonRequestParams(null, "http://localhost:8080/database/size", "GET", RavenSessionProvider.DocumentStore.Credentials, RavenSessionProvider.DocumentStore.Conventions);
 #else
-                var jsonData = RavenSessionProvider.DocumentStore.JsonRequestFactory.CreateHttpJsonRequest(null, "https://1.ravenhq.com/databases/DinnerParty-DinnerPartyDB/database/size", "GET", RavenSessionProvider.DocumentStore.Credentials, RavenSessionProvider.DocumentStore.Conventions).ReadResponseJson();
-      
+                var jsonRequestParams = new CreateHttpJsonRequestParams(null, "https://1.ravenhq.com/databases/DinnerParty-DinnerPartyDB/database/size", "GET", RavenSessionProvider.DocumentStore.Credentials, RavenSessionProvider.DocumentStore.Conventions);
 #endif
+                var jsonData = RavenSessionProvider.DocumentStore.JsonRequestFactory.CreateHttpJsonRequest(jsonRequestParams).ReadResponseJson();
+
                 int dbSize = int.Parse(jsonData.SelectToken("DatabaseSize").ToString());
                 long docCount = RavenSessionProvider.DocumentStore.DatabaseCommands.GetStatistics().CountOfDocuments;
 
