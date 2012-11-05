@@ -8,15 +8,15 @@ using Nancy.Diagnostics;
 using System;
 using Raven.Client;
 using Raven.Client.Connection;
-using TinyIoC;
 using DinnerParty.Models;
 using Raven.Abstractions.Data;
+using Nancy.TinyIoc;
 
 namespace DinnerParty
 {
     public class Bootstrapper : DefaultNancyBootstrapper
     {
-        protected override void ApplicationStartup(TinyIoC.TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines)
+        protected override void ApplicationStartup(TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines)
         {
             base.ApplicationStartup(container, pipelines);
 
@@ -40,7 +40,7 @@ namespace DinnerParty
             };
         }
 
-        protected override void RequestStartup(TinyIoC.TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines, NancyContext context)
+        protected override void RequestStartup(TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines, NancyContext context)
         {
             base.RequestStartup(container, pipelines, context);
 
@@ -60,7 +60,7 @@ namespace DinnerParty
             FormsAuthentication.Enable(pipelines, formsAuthConfiguration);
         }
 
-        protected override void ConfigureRequestContainer(TinyIoC.TinyIoCContainer container, NancyContext context)
+        protected override void ConfigureRequestContainer(TinyIoCContainer container, NancyContext context)
         {
             base.ConfigureRequestContainer(container, context);
 
