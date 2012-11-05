@@ -1,22 +1,22 @@
-﻿using Nancy;
-using Nancy.Authentication.Forms;
-using Nancy.Validation.DataAnnotations;
+﻿using System;
+using DinnerParty.Models;
 using DinnerParty.Models.CustomAnnotations;
-using Nancy.Bootstrapper;
 using DinnerParty.Models.RavenDB;
+using Nancy;
+using Nancy.Authentication.Forms;
+using Nancy.Bootstrapper;
 using Nancy.Diagnostics;
-using System;
+using Nancy.TinyIoc;
+using Nancy.Validation.DataAnnotations;
+using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Connection;
-using DinnerParty.Models;
-using Raven.Abstractions.Data;
-using Nancy.TinyIoc;
 
 namespace DinnerParty
 {
     public class Bootstrapper : DefaultNancyBootstrapper
     {
-        protected override void ApplicationStartup(TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines)
+        protected override void ApplicationStartup(TinyIoCContainer container, IPipelines pipelines)
         {
             base.ApplicationStartup(container, pipelines);
 
@@ -40,7 +40,7 @@ namespace DinnerParty
             };
         }
 
-        protected override void RequestStartup(TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines, NancyContext context)
+        protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
         {
             base.RequestStartup(container, pipelines, context);
 
@@ -73,7 +73,7 @@ namespace DinnerParty
             nancyConventions.StaticContentsConventions.Add(Nancy.Conventions.StaticContentConventionBuilder.AddDirectory("/", "public"));
         }
 
-        protected override Nancy.Bootstrapper.NancyInternalConfiguration InternalConfiguration
+        protected override NancyInternalConfiguration InternalConfiguration
         {
             get
             {
@@ -82,7 +82,7 @@ namespace DinnerParty
             }
         }
 
-        protected override Nancy.Diagnostics.DiagnosticsConfiguration DiagnosticsConfiguration
+        protected override DiagnosticsConfiguration DiagnosticsConfiguration
         {
             get { return new DiagnosticsConfiguration { Password = @"nancy" }; }
         }
