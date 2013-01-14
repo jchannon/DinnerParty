@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Nancy;
+using Nancy.Responses.Negotiation;
 using Nancy.Security;
 using DinnerParty.Models;
 using PagedList;
@@ -23,35 +24,10 @@ namespace DinnerParty.Modules
         {
             const string basePath = "/dinners";
 
-            Get[basePath + Route.AnyIntOptional("page")] = parameters =>
-            {
+            Get[basePath] = Dinners;
+            Get[basePath + "/page/{pagenumber}"] = Dinners;
 
-                base.Page.Title = "Upcoming Nerd Dinners";
-                IQueryable<Dinner> dinners = null;
-
-                //Searching?
-                if (this.Request.Query.q.HasValue)
-                {
-                    string query = this.Request.Query.q;
-
-                    dinners = DocumentSession.Query<Dinner>().Where(d => d.Title.Contains(query)
-                            || d.Description.Contains(query)
-                            || d.HostedBy.Contains(query)).OrderBy(d => d.EventDate);
-                }
-                else
-                {
-                    dinners = DocumentSession.Query<Dinner, Dinners_Index>().Where(d => d.EventDate > DateTime.Now.Date).OrderBy(x => x.EventDate);
-                }
-
-                int pageIndex = parameters.page.HasValue && !String.IsNullOrWhiteSpace(parameters.page) ? parameters.page : 1;
-
-                base.Model.Dinners = dinners.ToPagedList(pageIndex, PageSize);
-
-                return View["Dinners/Index", base.Model];
-
-            };
-
-            Get[Route.AnyIntOptional("id")] = parameters =>
+            Get[basePath + "/{id}"] = parameters =>
             {
                 if (!parameters.id.HasValue && String.IsNullOrWhiteSpace(parameters.id))
                 {
@@ -70,8 +46,32 @@ namespace DinnerParty.Modules
 
                 return View["Dinners/Details", base.Model];
             };
+        }
 
+        private Negotiator Dinners(dynamic parameters)
+        {
+            base.Page.Title = "Upcoming Nerd Dinners";
+            IQueryable<Dinner> dinners = null;
 
+            //Searching?
+            if (this.Request.Query.q.HasValue)
+            {
+                string query = this.Request.Query.q;
+
+                dinners = DocumentSession.Query<Dinner>().Where(d => d.Title.Contains(query)
+                        || d.Description.Contains(query)
+                        || d.HostedBy.Contains(query)).OrderBy(d => d.EventDate);
+            }
+            else
+            {
+                dinners = DocumentSession.Query<Dinner, Dinners_Index>().Where(d => d.EventDate > DateTime.Now.Date).OrderBy(x => x.EventDate);
+            }
+
+            int pageIndex = parameters.pagenumber.HasValue && !String.IsNullOrWhiteSpace(parameters.pagenumber) ? parameters.pagenumber : 1;
+
+            base.Model.Dinners = dinners.ToPagedList(pageIndex, PageSize);
+
+            return View["Dinners/Index", base.Model];
         }
     }
 
@@ -117,7 +117,7 @@ namespace DinnerParty.Modules
                         DocumentSession.Store(dinner);
                         DocumentSession.SaveChanges();
 
-                        return this.Response.AsRedirect("/" + dinner.DinnerID);
+                        return this.Response.AsRedirect("/dinners/" + dinner.DinnerID);
                     }
                     else
                     {

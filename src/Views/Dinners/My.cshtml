@@ -11,7 +11,7 @@
 	@foreach (var dinner in Model.Dinners)
  { 
 		<li>     
-            <a href="/@dinner.DinnerID">@dinner.Title</a>
+            <a href="/dinners/@dinner.DinnerID">@dinner.Title</a>
 			on 
 			<strong>@dinner.EventDate.ToString("yyyy-MMM-dd")
 			@dinner.EventDate.ToString("HH:mm tt")</strong>

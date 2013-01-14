@@ -1,5 +1,6 @@
 ﻿using Nancy;
 using Nancy.Authentication.Forms;
+using Nancy.TinyIoc;
 using Nancy.Validation.DataAnnotations;
 using DinnerParty.Models.CustomAnnotations;
 using Nancy.Bootstrapper;
@@ -7,15 +8,15 @@ using DinnerParty.Models.RavenDB;
 using Nancy.Diagnostics;
 using System;
 using Raven.Client;
-using TinyIoC;
 using DinnerParty.Models;
 using Raven.Abstractions.Data;
+using Raven.Client.Connection;
 
 namespace DinnerParty
 {
     public class Bootstrapper : DefaultNancyBootstrapper
     {
-        protected override void ApplicationStartup(TinyIoC.TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines)
+        protected override void ApplicationStartup(TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines)
         {
             base.ApplicationStartup(container, pipelines);
 
@@ -39,7 +40,7 @@ namespace DinnerParty
             };
         }
 
-        protected override void RequestStartup(TinyIoC.TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines, NancyContext context)
+        protected override void RequestStartup(TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines, NancyContext context)
         {
             base.RequestStartup(container, pipelines, context);
 
@@ -59,7 +60,7 @@ namespace DinnerParty
             FormsAuthentication.Enable(pipelines, formsAuthConfiguration);
         }
 
-        protected override void ConfigureRequestContainer(TinyIoC.TinyIoCContainer container, NancyContext context)
+        protected override void ConfigureRequestContainer(TinyIoCContainer container, NancyContext context)
         {
             base.ConfigureRequestContainer(container, context);
 
@@ -113,10 +114,15 @@ namespace DinnerParty
                 //If database size >15mb or 1000 documents delete documents older than a week
 
 #if DEBUG
-                var jsonData = RavenSessionProvider.DocumentStore.JsonRequestFactory.CreateHttpJsonRequest(null, "http://localhost:8080/database/size", "GET", RavenSessionProvider.DocumentStore.Credentials, RavenSessionProvider.DocumentStore.Conventions).ReadResponseJson();
+                var jsonData =
+                    RavenSessionProvider.DocumentStore.JsonRequestFactory.CreateHttpJsonRequest(
+                        new CreateHttpJsonRequestParams(null, "http://localhost:8080/database/size", "GET", RavenSessionProvider.DocumentStore.Credentials,
+                                                        RavenSessionProvider.DocumentStore.Conventions)).ReadResponseJson();
 #else
-                var jsonData = RavenSessionProvider.DocumentStore.JsonRequestFactory.CreateHttpJsonRequest(null, "https://1.ravenhq.com/databases/DinnerParty-DinnerPartyDB/database/size", "GET", RavenSessionProvider.DocumentStore.Credentials, RavenSessionProvider.DocumentStore.Conventions).ReadResponseJson();
-      
+                var jsonData =
+                    RavenSessionProvider.DocumentStore.JsonRequestFactory.CreateHttpJsonRequest(
+                        new CreateHttpJsonRequestParams(null, "https://1.ravenhq.com/databases/DinnerParty-DinnerPartyDB/database/size", "GET", RavenSessionProvider.DocumentStore.Credentials,
+                                                        RavenSessionProvider.DocumentStore.Conventions)).ReadResponseJson();      
 #endif
                 int dbSize = int.Parse(jsonData.SelectToken("DatabaseSize").ToString());
                 long docCount = RavenSessionProvider.DocumentStore.DatabaseCommands.GetStatistics().CountOfDocuments;

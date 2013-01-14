@@ -11,9 +11,16 @@
     (function () {
         if (typeof window.janrain !== 'object') window.janrain = {};
         if (typeof window.janrain.settings !== 'object') window.janrain.settings = {};
-
-        janrain.settings.tokenUrl = 'http://dinnerparty.azurewebsites.net/account/token';
-
+        @{
+            if (@Html.IsDebug())
+            {
+                <text>janrain.settings.tokenUrl = 'http://localhost:63155/account/token';</text>
+            }
+            else
+            {
+                <text>janrain.settings.tokenUrl = 'http://dinnerparty.azurewebsites.net/account/token';</text>
+            }
+        }
         function isReady() { janrain.ready = true; };
         if (document.addEventListener) {
             document.addEventListener("DOMContentLoaded", isReady, false);
@@ -36,13 +43,13 @@
     })();
 </script>
   }
-<div id="login">
+<div id="login"> 
 <div id="janrainEngageEmbed" class="login-oauth"></div>
 
 <div id="or">
 <p>OR</p>
 </div>
-
+   
 @Html.Partial("_LogonNative", Model)
 
 </div>

@@ -10,8 +10,8 @@ using Nancy.ModelBinding;
 using DinnerParty.Models;
 using System.Configuration;
 using System.Net;
-using Newtonsoft.Json;
 using DinnerParty.Models.RavenDB;
+using Raven.Imports.Newtonsoft.Json;
 
 namespace DinnerParty.Modules
 {

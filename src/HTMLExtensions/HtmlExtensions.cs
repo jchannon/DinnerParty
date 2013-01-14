@@ -60,13 +60,22 @@ namespace DinnerParty.HtmlExtensions
             {
                 if (item.Name == PropertyName)
                 {
-                    span += "<span class=\"field-validation-error\">" + item.ErrorMessage+ "</span>";
+                    span += "<span class=\"field-validation-error\">" + item.ErrorMessage + "</span>";
                     break;
                 }
 
             }
 
             return new NonEncodedHtmlString(span);
+        }
+
+        public static bool IsDebug<T>(this HtmlHelpers<T> helper)
+        {
+#if DEBUG
+            return true;
+#else
+            return false;
+#endif
         }
     }
 }

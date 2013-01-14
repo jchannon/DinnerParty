@@ -6,6 +6,7 @@ using Nancy;
 using DinnerParty.Models;
 using Nancy.RouteHelpers;
 using DinnerParty.Models.RavenDB;
+using Raven.Client;
 using Raven.Client.Linq;
 
 namespace DinnerParty.Modules
@@ -127,7 +128,7 @@ namespace DinnerParty.Modules
 
                 //TODO: Need to mock this out for testing...
                 //Url = Url.RouteUrl("PrettyDetails", new { Id = dinner.DinnerID } )
-                Url = dinner.DinnerID.ToString()
+                Url = dinner.Id.ToString()
             };
         }
     }

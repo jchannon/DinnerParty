@@ -37,7 +37,7 @@ namespace DinnerParty.Modules
         {
             this.RequiresAuthentication();
 
-            Post["/Cancel/" + Route.AnyIntOptional("id")] = parameters =>
+            Post["/Cancel/{id}"] = parameters =>
             {
                 Dinner dinner = DocumentSession.Load<Dinner>((int)parameters.id);
 
@@ -55,7 +55,7 @@ namespace DinnerParty.Modules
                 return "Sorry you can't make it!";
             };
 
-            Post["/Register/" + Route.AnyIntOptional("id")] = parameters =>
+            Post["/Register/{id}"] = parameters =>
             {
                 Dinner dinner = DocumentSession.Load<Dinner>((int)parameters.id);
 
