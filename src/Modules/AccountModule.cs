@@ -11,9 +11,9 @@ using DinnerParty.Models;
 using System.Configuration;
 using System.Net;
 using DinnerParty.Models.RavenDB;
+using Newtonsoft.Json;
 using Raven.Client;
 using Raven.Client.Document;
-using Raven.Imports.Newtonsoft.Json;
 
 namespace DinnerParty.Modules
 {

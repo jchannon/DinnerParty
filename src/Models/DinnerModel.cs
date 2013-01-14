@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Raven.Imports.Newtonsoft.Json;
+using Newtonsoft.Json;
 
 namespace DinnerParty.Models
 {
