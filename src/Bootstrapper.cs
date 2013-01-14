@@ -11,6 +11,7 @@ using Raven.Client;
 using DinnerParty.Models;
 using Raven.Abstractions.Data;
 using Raven.Client.Connection;
+using Raven.Client.Document;
 
 namespace DinnerParty
 {
@@ -26,18 +27,31 @@ namespace DinnerParty
 
             DataAnnotationsValidator.RegisterAdapter(typeof(MatchAttribute), (v, d) => new CustomDataAdapter((MatchAttribute)v));
 
-            Func<TinyIoCContainer, NamedParameterOverloads, IDocumentSession> factory = (ioccontainer, namedparams) => { return new RavenSessionProvider().GetSession(); };
-            container.Register<IDocumentSession>(factory);
+            var docStore = container.Resolve<DocumentStore>("DocStore");
 
-            CleanUpDB(container.Resolve<IDocumentSession>());
+            CleanUpDB(docStore);
 
-            Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(Dinners_Index).Assembly, RavenSessionProvider.DocumentStore);
-           
+            Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(Dinners_Index).Assembly, docStore);
+
             pipelines.OnError += (context, exception) =>
             {
                 Elmah.ErrorSignal.FromCurrentContext().Raise(exception);
                 return null;
             };
+        }
+
+        protected override void ConfigureApplicationContainer(TinyIoCContainer container)
+        {
+            base.ConfigureApplicationContainer(container);
+
+            var store = new DocumentStore
+            {
+                ConnectionStringName = "RavenDB1"
+            };
+
+            store.Initialize();
+
+            container.Register(store, "DocStore");
         }
 
         protected override void RequestStartup(TinyIoCContainer container, Nancy.Bootstrapper.IPipelines pipelines, NancyContext context)
@@ -65,6 +79,11 @@ namespace DinnerParty
             base.ConfigureRequestContainer(container, context);
 
             container.Register<IUserMapper, UserMapper>();
+
+            var docStore = container.Resolve<DocumentStore>("DocStore");
+            var documentSession = docStore.OpenSession();
+
+            container.Register<IDocumentSession>(documentSession);
         }
 
         protected override void ConfigureConventions(Nancy.Conventions.NancyConventions nancyConventions)
@@ -73,23 +92,15 @@ namespace DinnerParty
             nancyConventions.StaticContentsConventions.Add(Nancy.Conventions.StaticContentConventionBuilder.AddDirectory("/", "public"));
         }
 
-        protected override Nancy.Bootstrapper.NancyInternalConfiguration InternalConfiguration
-        {
-            get
-            {
-                var config = NancyInternalConfiguration.WithOverrides(x => x.NancyModuleBuilder = typeof(RavenAwareModuleBuilder));
-                return config;
-            }
-        }
-
         protected override Nancy.Diagnostics.DiagnosticsConfiguration DiagnosticsConfiguration
         {
             get { return new DiagnosticsConfiguration { Password = @"nancy" }; }
         }
 
-        private void CleanUpDB(IDocumentSession DocSession)
+        private void CleanUpDB(DocumentStore documentStore)
         {
-            var configInfo = DocSession.Load<Config>("DinnerParty/Config");
+            var docSession = documentStore.OpenSession();
+            var configInfo = docSession.Load<Config>("DinnerParty/Config");
 
             if (configInfo == null)
             {
@@ -97,8 +108,8 @@ namespace DinnerParty
                 configInfo.Id = "DinnerParty/Config";
                 configInfo.LastTruncateDate = DateTime.Now.AddHours(-48); //No need to delete data if config doesnt exist but setup ready for next time
 
-                DocSession.Store(configInfo);
-                DocSession.SaveChanges();
+                docSession.Store(configInfo);
+                docSession.SaveChanges();
 
                 return;
             }
@@ -109,32 +120,32 @@ namespace DinnerParty
 
 
                 configInfo.LastTruncateDate = DateTime.Now;
-                DocSession.SaveChanges();
+                docSession.SaveChanges();
 
                 //If database size >15mb or 1000 documents delete documents older than a week
 
 #if DEBUG
                 var jsonData =
-                    RavenSessionProvider.DocumentStore.JsonRequestFactory.CreateHttpJsonRequest(
-                        new CreateHttpJsonRequestParams(null, "http://localhost:8080/database/size", "GET", RavenSessionProvider.DocumentStore.Credentials,
-                                                        RavenSessionProvider.DocumentStore.Conventions)).ReadResponseJson();
+                    documentStore.JsonRequestFactory.CreateHttpJsonRequest(
+                        new CreateHttpJsonRequestParams(null, "http://localhost:8080/database/size", "GET", documentStore.Credentials,
+                                                       documentStore.Conventions)).ReadResponseJson();
 #else
                 var jsonData =
-                    RavenSessionProvider.DocumentStore.JsonRequestFactory.CreateHttpJsonRequest(
-                        new CreateHttpJsonRequestParams(null, "https://1.ravenhq.com/databases/DinnerParty-DinnerPartyDB/database/size", "GET", RavenSessionProvider.DocumentStore.Credentials,
-                                                        RavenSessionProvider.DocumentStore.Conventions)).ReadResponseJson();      
+                    documentStore.JsonRequestFactory.CreateHttpJsonRequest(
+                        new CreateHttpJsonRequestParams(null, "https://1.ravenhq.com/databases/DinnerParty-DinnerPartyDB/database/size", "GET", documentStore.credentials,
+                                                      documentStore.Conventions)).ReadResponseJson();      
 #endif
                 int dbSize = int.Parse(jsonData.SelectToken("DatabaseSize").ToString());
-                long docCount = RavenSessionProvider.DocumentStore.DatabaseCommands.GetStatistics().CountOfDocuments;
+                long docCount = documentStore.DatabaseCommands.GetStatistics().CountOfDocuments;
 
-                
+
                 if (docCount > 1000 || dbSize > 15000000) //its actually 14.3mb but goood enough
                 {
 
-                    RavenSessionProvider.DocumentStore.DatabaseCommands.DeleteByIndex("Raven/DocumentsByEntityName",
+                    documentStore.DatabaseCommands.DeleteByIndex("Raven/DocumentsByEntityName",
                                               new IndexQuery
                                               {
-                                                  Query = DocSession.Advanced.LuceneQuery<object>()
+                                                  Query = docSession.Advanced.LuceneQuery<object>()
                                                   .WhereEquals("Tag", "Dinners")
                                                   .AndAlso()
                                                   .WhereLessThan("LastModified", DateTime.Now.AddDays(-7)).ToString()

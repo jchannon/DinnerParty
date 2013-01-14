@@ -26,10 +26,6 @@ namespace DinnerParty.Modules
 
                 return View["About", base.Model];
             };
-
-           
-
         }
-
     }
 }

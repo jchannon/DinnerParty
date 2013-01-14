@@ -11,10 +11,10 @@ namespace DinnerParty.Modules
 {
     public class BaseModule : NancyModule
     {
+
         public dynamic Model = new ExpandoObject();
+        
         protected PageModel Page { get; set; }
-
-
 
         public BaseModule()
         {

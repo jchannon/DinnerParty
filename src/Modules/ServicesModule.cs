@@ -5,17 +5,18 @@ using System.Web;
 using DinnerParty.Models;
 using Nancy;
 using DinnerParty.Models.RavenDB;
+using Raven.Client;
 
 namespace DinnerParty.Modules
 {
-    public class ServicesModule : PersistModule
+    public class ServicesModule : BaseModule
     {
-        public ServicesModule()
+        public ServicesModule(IDocumentSession documentSession)
             : base("/services")
         {
             Get["/RSS"] = parameters =>
                 {
-                    var dinners = DocumentSession.Query<Dinner, Dinners_Index>().Where(d => d.EventDate > DateTime.Now.Date).OrderBy(x => x.EventDate).AsEnumerable();
+                    var dinners = documentSession.Query<Dinner, Dinners_Index>().Where(d => d.EventDate > DateTime.Now.Date).OrderBy(x => x.EventDate).AsEnumerable();
 
                     if (dinners == null)
                     {

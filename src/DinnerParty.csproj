@@ -291,8 +291,6 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\RavenDB\Dinners_Index.cs" />
     <Compile Include="Models\RavenDB\IndexUserLoginType.cs" />
-    <Compile Include="Models\RavenDB\RavenAwareModuleBuilder.cs" />
-    <Compile Include="Models\RavenDB\RavenSessionProvider.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\RSVP.cs" />
     <Compile Include="Models\UserModel.cs" />
@@ -300,7 +298,6 @@
     <Compile Include="Modules\BaseModule.cs" />
     <Compile Include="Modules\DinnerModule.cs" />
     <Compile Include="Modules\HomeModule.cs" />
-    <Compile Include="Modules\PersistModule.cs" />
     <Compile Include="Modules\RSVPModule.cs" />
     <Compile Include="Modules\SearchModule.cs" />
     <Compile Include="Modules\ServicesModule.cs" />

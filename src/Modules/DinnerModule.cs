@@ -13,15 +13,18 @@ using Nancy.ModelBinding;
 using Nancy.Validation;
 using System.ComponentModel;
 using DinnerParty.Models.RavenDB;
+using Raven.Client;
 
 namespace DinnerParty.Modules
 {
-    public class DinnerModule : PersistModule
+    public class DinnerModule : BaseModule
     {
+        private readonly IDocumentSession documentSession;
         private const int PageSize = 25;
 
-        public DinnerModule()
+        public DinnerModule(IDocumentSession documentSession)
         {
+            this.documentSession = documentSession;
             const string basePath = "/dinners";
 
             Get[basePath] = Dinners;
@@ -34,7 +37,7 @@ namespace DinnerParty.Modules
                     return 404;
                 }
 
-                Dinner dinner = DocumentSession.Load<Dinner>((int)parameters.id);
+                Dinner dinner = documentSession.Load<Dinner>((int)parameters.id);
 
                 if (dinner == null)
                 {
@@ -58,13 +61,13 @@ namespace DinnerParty.Modules
             {
                 string query = this.Request.Query.q;
 
-                dinners = DocumentSession.Query<Dinner>().Where(d => d.Title.Contains(query)
+                dinners = documentSession.Query<Dinner>().Where(d => d.Title.Contains(query)
                         || d.Description.Contains(query)
                         || d.HostedBy.Contains(query)).OrderBy(d => d.EventDate);
             }
             else
             {
-                dinners = DocumentSession.Query<Dinner, Dinners_Index>().Where(d => d.EventDate > DateTime.Now.Date).OrderBy(x => x.EventDate);
+                dinners = documentSession.Query<Dinner, Dinners_Index>().Where(d => d.EventDate > DateTime.Now.Date).OrderBy(x => x.EventDate);
             }
 
             int pageIndex = parameters.pagenumber.HasValue && !String.IsNullOrWhiteSpace(parameters.pagenumber) ? parameters.pagenumber : 1;
@@ -75,9 +78,9 @@ namespace DinnerParty.Modules
         }
     }
 
-    public class DinnerModuleAuth : PersistModule
+    public class DinnerModuleAuth : BaseModule
     {
-        public DinnerModuleAuth()
+        public DinnerModuleAuth(IDocumentSession documentSession)
             : base("/dinners")
         {
             this.RequiresAuthentication();
@@ -114,8 +117,8 @@ namespace DinnerParty.Modules
                         dinner.RSVPs = new List<RSVP>();
                         dinner.RSVPs.Add(rsvp);
 
-                        DocumentSession.Store(dinner);
-                        DocumentSession.SaveChanges();
+                        documentSession.Store(dinner);
+                        documentSession.SaveChanges();
 
                         return this.Response.AsRedirect("/dinners/" + dinner.DinnerID);
                     }
@@ -137,7 +140,7 @@ namespace DinnerParty.Modules
 
             Get["/delete/" + Route.AnyIntAtLeastOnce("id")] = parameters =>
                 {
-                    Dinner dinner = DocumentSession.Load<Dinner>((int)parameters.id);
+                    Dinner dinner = documentSession.Load<Dinner>((int)parameters.id);
 
                     if (dinner == null)
                     {
@@ -160,7 +163,7 @@ namespace DinnerParty.Modules
 
             Post["/delete/" + Route.AnyIntAtLeastOnce("id")] = parameters =>
                 {
-                    Dinner dinner = DocumentSession.Load<Dinner>((int)parameters.id);
+                    Dinner dinner = documentSession.Load<Dinner>((int)parameters.id);
 
                     if (dinner == null)
                     {
@@ -174,8 +177,8 @@ namespace DinnerParty.Modules
                         return View["InvalidOwner", base.Model];
                     }
 
-                    DocumentSession.Delete(dinner);
-                    DocumentSession.SaveChanges();
+                    documentSession.Delete(dinner);
+                    documentSession.SaveChanges();
 
                     base.Page.Title = "Deleted";
                     return View["Deleted", base.Model];
@@ -183,7 +186,7 @@ namespace DinnerParty.Modules
 
             Get["/edit" + Route.And() + Route.AnyIntAtLeastOnce("id")] = parameters =>
                 {
-                    Dinner dinner = DocumentSession.Load<Dinner>((int)parameters.id);
+                    Dinner dinner = documentSession.Load<Dinner>((int)parameters.id);
 
                     if (dinner == null)
                     {
@@ -205,7 +208,7 @@ namespace DinnerParty.Modules
 
             Post["/edit" + Route.And() + Route.AnyIntAtLeastOnce("id")] = parameters =>
                 {
-                    Dinner dinner = DocumentSession.Load<Dinner>((int)parameters.id);
+                    Dinner dinner = documentSession.Load<Dinner>((int)parameters.id);
 
                     if (!dinner.IsHostedBy(this.Context.CurrentUser.UserName))
                     {
@@ -232,7 +235,7 @@ namespace DinnerParty.Modules
                         return View["Edit", base.Model];
                     }
 
-                    DocumentSession.SaveChanges();
+                    documentSession.SaveChanges();
 
                     return this.Response.AsRedirect("/" + dinner.DinnerID);
 
@@ -242,7 +245,7 @@ namespace DinnerParty.Modules
                 {
                     string nerdName = this.Context.CurrentUser.UserName;
 
-                    var userDinners = DocumentSession.Query<Dinner, Dinners_Index>()
+                    var userDinners = documentSession.Query<Dinner, Dinners_Index>()
                                     .Where(x => x.HostedById == nerdName || x.HostedBy == nerdName || x.RSVPs.Any(r => r.AttendeeNameId == nerdName || (r.AttendeeNameId == null && r.AttendeeName == nerdName)))
                                     .OrderBy(x => x.EventDate)
                                     .AsEnumerable();

@@ -5,41 +5,20 @@ using System.Web;
 using Nancy.Security;
 using DinnerParty.Models;
 using Nancy.RouteHelpers;
+using Raven.Client;
 
 namespace DinnerParty.Modules
 {
-    public class RSVPModule : BaseModule
+    public class RSVPAuthorizedModule : BaseModule
     {
-        public RSVPModule()
+        public RSVPAuthorizedModule(IDocumentSession documentSession)
             : base("/RSVP")
-        {
-            Get["/RsvpTwitterBegin/intcalledID"] = paramsd => { return "hi"; };
-
-            Get["/RsvpBegin/intcalledID"] = paramsd =>
-            {
-
-                if (Request.Query.identifier.HasValue)
-                {
-
-                }
-
-                return "hi";
-
-            };
-
-
-        }
-    }
-
-    public class RSVPAuthorizedModule : PersistModule
-    {
-        public RSVPAuthorizedModule() : base("/RSVP")
         {
             this.RequiresAuthentication();
 
             Post["/Cancel/{id}"] = parameters =>
             {
-                Dinner dinner = DocumentSession.Load<Dinner>((int)parameters.id);
+                Dinner dinner = documentSession.Load<Dinner>((int)parameters.id);
 
                 RSVP rsvp = dinner.RSVPs
                     .Where(r => this.Context.CurrentUser.UserName == (r.AttendeeNameId ?? r.AttendeeName))
@@ -48,7 +27,7 @@ namespace DinnerParty.Modules
                 if (rsvp != null)
                 {
                     dinner.RSVPs.Remove(rsvp);
-                    DocumentSession.SaveChanges();
+                    documentSession.SaveChanges();
 
                 }
 
@@ -57,7 +36,7 @@ namespace DinnerParty.Modules
 
             Post["/Register/{id}"] = parameters =>
             {
-                Dinner dinner = DocumentSession.Load<Dinner>((int)parameters.id);
+                Dinner dinner = documentSession.Load<Dinner>((int)parameters.id);
 
                 if (!dinner.IsUserRegistered(this.Context.CurrentUser.UserName))
                 {
@@ -68,7 +47,7 @@ namespace DinnerParty.Modules
 
                     dinner.RSVPs.Add(rsvp);
 
-                    DocumentSession.SaveChanges(); 
+                    documentSession.SaveChanges(); 
                 }
 
                 return "Thanks - we'll see you there!";

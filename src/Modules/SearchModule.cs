@@ -13,9 +13,9 @@ namespace DinnerParty.Modules
 {
 
 
-    public class SearchModule : PersistModule
+    public class SearchModule : BaseModule
     {
-        public SearchModule()
+        public SearchModule(IDocumentSession documentSession)
             : base("/search")
         {
             Post["/GetMostPopularDinners"] = parameters =>
@@ -25,7 +25,7 @@ namespace DinnerParty.Modules
                     if (!this.Request.Form.limit.HasValue || String.IsNullOrWhiteSpace(this.Request.Form.limit))
                         this.Request.Form.limit = 40;
 
-                    var jsonDinners = DocumentSession.Query<JsonDinner, Dinners_Index>()
+                    var jsonDinners = documentSession.Query<JsonDinner, Dinners_Index>()
                         .Where(x => x.EventDate >= DateTime.Now.Date)
                         .Take((int)this.Request.Form.limit)
                         .OrderByDescending(x => x.RSVPCount)
@@ -41,7 +41,7 @@ namespace DinnerParty.Modules
                 double latitude = (double)this.Request.Form.latitude;
                 double longitude = (double)this.Request.Form.longitude;
 
-                var dinners = DocumentSession.Query<Dinner, Dinners_Index>()
+                var dinners = documentSession.Query<Dinner, Dinners_Index>()
                                 .Where(x => x.EventDate > DateTime.Now.Date)
                                 .AsEnumerable()
                                 .Where(x => DistanceBetween(x.Latitude, x.Longitude, latitude, longitude) < 1000).Select(x => JsonDinnerFromDinner(x));

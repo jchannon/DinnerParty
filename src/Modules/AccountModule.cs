@@ -11,13 +11,15 @@ using DinnerParty.Models;
 using System.Configuration;
 using System.Net;
 using DinnerParty.Models.RavenDB;
+using Raven.Client;
+using Raven.Client.Document;
 using Raven.Imports.Newtonsoft.Json;
 
 namespace DinnerParty.Modules
 {
-    public class AccountModule : PersistModule
+    public class AccountModule : BaseModule
     {
-        public AccountModule()
+        public AccountModule(IDocumentSession documentSession)
             : base("/account")
         {
             Get["/logon"] = parameters =>
@@ -35,7 +37,7 @@ namespace DinnerParty.Modules
                     var model = this.Bind<LoginModel>();
                     var result = this.Validate(model);
 
-                    var userMapper = new UserMapper(DocumentSession);
+                    var userMapper = new UserMapper(documentSession);
                     var userGuid = userMapper.ValidateUser(model.UserName, model.Password);
 
                     if (userGuid == null || !result.IsValid)
@@ -106,7 +108,7 @@ namespace DinnerParty.Modules
                         return View["Register", base.Model];
                     }
 
-                    var userMapper = new UserMapper(DocumentSession);
+                    var userMapper = new UserMapper(documentSession);
                     var userGUID = userMapper.ValidateRegisterNewUser(model);
 
                     //User already exists
@@ -162,7 +164,7 @@ namespace DinnerParty.Modules
                 if (j.profile.email != null)
                     email = j.profile.email.ToString();
 
-                var user = DocumentSession.Query<UserModel, IndexUserLogin>().Where(x => x.LoginType == userIdentity).FirstOrDefault();
+                var user = documentSession.Query<UserModel, IndexUserLogin>().Where(x => x.LoginType == userIdentity).FirstOrDefault();
                               
                 if (user == null)
                 {
@@ -170,13 +172,13 @@ namespace DinnerParty.Modules
                     {
                         UserId = Guid.NewGuid(),
                         EMailAddress = (!string.IsNullOrEmpty(email)) ? email : "none@void.com",
-                        Username = (!string.IsNullOrEmpty(username)) ? username : "New User " + DocumentSession.Query<UserModel>().Count(),
+                        Username = (!string.IsNullOrEmpty(username)) ? username : "New User " + documentSession.Query<UserModel>().Count(),
                         LoginType = userIdentity,
                         FriendlyName = displayName
                     };
 
-                    DocumentSession.Store(newUser);
-                    DocumentSession.SaveChanges();
+                    documentSession.Store(newUser);
+                    documentSession.SaveChanges();
                     return this.LoginAndRedirect(newUser.UserId, DateTime.Now.AddDays(7));
                 }
 
