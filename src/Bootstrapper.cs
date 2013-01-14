@@ -132,7 +132,7 @@ namespace DinnerParty
 #else
                 var jsonData =
                     documentStore.JsonRequestFactory.CreateHttpJsonRequest(
-                        new CreateHttpJsonRequestParams(null, "https://1.ravenhq.com/databases/DinnerParty-DinnerPartyDB/database/size", "GET", documentStore.credentials,
+                        new CreateHttpJsonRequestParams(null, "https://1.ravenhq.com/databases/DinnerParty-DinnerPartyDB/database/size", "GET", documentStore.Credentials,
                                                       documentStore.Conventions)).ReadResponseJson();      
 #endif
                 int dbSize = int.Parse(jsonData.SelectToken("DatabaseSize").ToString());
