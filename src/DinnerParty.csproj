@@ -95,13 +95,13 @@
       <HintPath>packages\PagedList.1.15.0.0\lib\net40\PagedList.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Lightweight, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-        <HintPath>packages\RavenDB.Client.1.0.888\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>packages\RavenDB.Client.1.0.888\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-        <HintPath>packages\RavenDB.Client.1.0.888\lib\net40\Raven.Abstractions.dll</HintPath>
+      <HintPath>packages\RavenDB.Client.1.0.888\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-       <HintPath>packages\Newtonsoft.Json.4.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <HintPath>packages\Newtonsoft.Json.4.0.8\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -147,9 +147,12 @@
     <Content Include="assets\stylesheets\images\hm-content-top.png" />
     <Content Include="assets\stylesheets\images\hm-masthead.png" />
     <Content Include="assets\stylesheets\images\icon-facebook.png" />
+    <Content Include="public\images\icon-facebook.png" />
     <Content Include="public\images\icon-feed-28x28.png" />
     <Content Include="assets\stylesheets\images\icon-google.png" />
     <Content Include="assets\stylesheets\images\icon-icalfeed-16x16.png" />
+    <Content Include="public\images\icon-google.png" />
+    <Content Include="public\images\icon-icalfeed-16x16.png" />
     <Content Include="public\images\icon-icalfeed-28x28.png" />
     <Content Include="public\images\icon-odatafeed-28x28.png" />
     <Content Include="assets\stylesheets\images\icon-search-black.png" />
@@ -174,6 +177,9 @@
     <Content Include="assets\stylesheets\images\Mobile\logo_medium_trans.png" />
     <Content Include="assets\stylesheets\images\Mobile\logo_small.png" />
     <Content Include="assets\stylesheets\images\myopenid.png" />
+    <Content Include="public\images\icon-twitter.png" />
+    <Content Include="public\images\icon-yahoo.png" />
+    <Content Include="public\images\microformat_hcalendar.png" />
     <Content Include="public\images\nerd.jpg" />
     <Content Include="assets\stylesheets\images\openid.gif" />
     <Content Include="assets\stylesheets\images\openid_login.gif" />
