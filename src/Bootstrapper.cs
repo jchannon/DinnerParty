@@ -129,7 +129,7 @@ namespace DinnerParty
                     documentStore.JsonRequestFactory.CreateHttpJsonRequest(null, "http://localhost:8080/database/size", "GET", documentStore.Credentials, documentStore.Conventions).ReadResponseJson();
 #else
                 var jsonData =
-                    documentStore.JsonRequestFactory.CreateHttpJsonRequest(null, "https://1.ravenhq.com/databases/DinnerParty-DinnerPartyDB/database/size", "GET", documentStore.Credentials, documentStore.Conventions).ReadResponseJson();
+                    documentStore.JsonRequestFactory.CreateHttpJsonRequest(null, "https://aeo.ravenhq.com/databases/DinnerParty-DinnerPartyDB/database/size", "GET", documentStore.Credentials, documentStore.Conventions).ReadResponseJson();
 #endif
                 int dbSize = int.Parse(jsonData.SelectToken("DatabaseSize").ToString());
                 long docCount = documentStore.DatabaseCommands.GetStatistics().CountOfDocuments;
